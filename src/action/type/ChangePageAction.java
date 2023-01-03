@@ -1,0 +1,91 @@
+package action.type;
+
+import action.Action;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import currentPosition.CurrentPosition;
+import database.Database;
+import io.ActionInput;
+import io.Output;
+import movie.Movie;
+import movie.MovieList;
+import pages.MoviesPage;
+import pages.Page;
+
+/**
+ * The type Change page action.
+ */
+public final class ChangePageAction implements Action {
+    /**
+     * Instantiates a new Change page action.
+     */
+    public ChangePageAction() {
+    }
+
+    /**
+     * Change page.
+     *
+     * @param action          the action
+     * @param database        the database
+     * @param currentPosition the current position
+     * @param output          the output
+     */
+    @Override
+    public void execute(final ActionInput action,
+                        final Database database,
+                        final ArrayNode output,
+                        final CurrentPosition currentPosition) {
+        Page nextPage;
+        MovieList movieList = database.getMovies();
+        nextPage = getNextPage(currentPosition, movieList, action.getMovie(), action.getPage());
+
+        if (nextPage != null) {
+            switch (nextPage.getName()) {
+                case "logout" -> currentPosition.setCurrentUser(null);
+                case "movies" -> {
+                    String country = currentPosition.getCurrentUser().getCredentials().getCountry();
+                    MoviesPage.getInstance().setMovies(movieList.getPermittedMovies(country));
+
+                    output.addPOJO(new Output(currentPosition.getCurrentUser(),
+                            movieList.getPermittedMovies(country).getMovies()));
+                }
+                case "see details" ->
+                    output.addPOJO(new Output(currentPosition.getCurrentUser(),
+                                    currentPosition.getCurrentMovie()));
+                case "login", "register", "upgrades", "homepage neautentificat" -> { }
+                default -> throw new IllegalArgumentException("Unrecognized action");
+            }
+            nextPage.setPreviousPage(currentPosition.getCurrentPage());
+            currentPosition.setCurrentPage(nextPage);
+            return;
+        }
+
+        output.addPOJO(new Output());
+    }
+
+    private Page getNextPage(final CurrentPosition currentPosition,
+                                    final MovieList movieList,
+                                    final String movieName,
+                                    final String pageName) {
+        if (!currentPosition.getCurrentPage().getAccessiblePages().contains(pageName)) {
+            return null;
+        }
+
+        Page page = currentPosition.getCurrentPage().getPageByName(pageName);
+
+        if (pageName.equals("movies")) {
+            String country = currentPosition.getCurrentUser().getCredentials().getCountry();
+            MoviesPage.getInstance().setMovies(new MovieList(movieList.getPermittedMovies(country)));
+        } else if (pageName.equals("see details")) {
+            MovieList permittedMovies = MoviesPage.getInstance().getMovies();
+            Movie currentMovie = permittedMovies.getMovieByName(movieName);
+
+            if (currentMovie == null) {
+                page = null;
+            } else {
+                currentPosition.setCurrentMovie(currentMovie);
+            }
+        }
+
+        return page;
+    }
+}
