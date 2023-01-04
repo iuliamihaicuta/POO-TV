@@ -1,5 +1,6 @@
 package user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import movie.Movie;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class User {
     private ArrayList<Notification> notifications = new ArrayList<>();
     @JsonIgnore
     private ArrayList<String> subscribedGenres = new ArrayList<>();
+    @JsonIgnore
+    private ArrayList<Ratings> ratings = new ArrayList<>();
 
     /**
      * Instantiates a new User.
@@ -55,6 +58,15 @@ public class User {
         this.notifications.addAll(user.notifications);
         this.subscribedGenres = new ArrayList<>();
         this.subscribedGenres.addAll(user.subscribedGenres);
+    }
+
+    public User(Credentials credentials) {
+        this.credentials = new Credentials();
+        this.credentials.setName(credentials.getName());
+        this.credentials.setAccountType(credentials.getAccountType());
+        this.credentials.setBalance(credentials.getBalance());
+        this.credentials.setCountry(credentials.getCountry());
+        this.credentials.setPassword(credentials.getPassword());
     }
 
     /**
@@ -199,11 +211,23 @@ public class User {
         this.subscribedGenres = subscribedGenres;
     }
 
+    public ArrayList<Ratings> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(ArrayList<Ratings> ratings) {
+        this.ratings = ratings;
+    }
+
     /**
      * Decrement number of free movies.
      */
     public void decrementNumberOfFreeMovies() {
         numFreePremiumMovies--;
+    }
+
+    public void incrementNumberOfFreeMovies() {
+        numFreePremiumMovies++;
     }
 
     /**
@@ -213,5 +237,22 @@ public class User {
      */
     public void decrementTokensCount(final int tokens) {
         tokensCount -= tokens;
+    }
+
+    public void incrementTokensCount(final int tokens) {
+        tokensCount += tokens;
+    }
+
+    public boolean removeMovie(final Movie movie) {
+        likedMovies.remove(movie);
+        watchedMovies.remove(movie);
+        ratedMovies.remove(movie);
+        return purchasedMovies.remove(movie);
+    }
+
+    public void refund() {
+    }
+
+    public void getRecommendation(ArrayNode output) {
     }
 }

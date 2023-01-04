@@ -1,5 +1,7 @@
 package user;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 /**
  * The type Premium user.
  */
@@ -12,5 +14,15 @@ public class PremiumUser extends User {
     public PremiumUser(final User user) {
         super(user);
         this.getCredentials().setAccountType("premium");
+    }
+
+    @Override
+    public void refund() {
+        incrementNumberOfFreeMovies();
+    }
+
+    @Override
+    public void getRecommendation(ArrayNode output) {
+
     }
 }

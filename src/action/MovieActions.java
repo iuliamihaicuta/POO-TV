@@ -1,15 +1,14 @@
 package action;
 
-import io.Output;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import io.Output;
 import movie.Movie;
+import user.Ratings;
 import user.User;
 
 import java.util.ArrayList;
 
-import static constansts.Constants.MAX_RATING;
-import static constansts.Constants.MIN_RATING;
-import static constansts.Constants.MOVIE_PRICE;
+import static constansts.Constants.*;
 
 /**
  * The type Movie actions.
@@ -74,8 +73,9 @@ public final class MovieActions {
 
         if (!user.getWatchedMovies().contains(movie)) {
             user.getWatchedMovies().add(new Movie(movie));
-            output.addPOJO(new Output(user, movie));
+//            output.addPOJO(new Output(user, movie));
         }
+        output.addPOJO(new Output(user, movie));
     }
 
     /**
@@ -87,6 +87,7 @@ public final class MovieActions {
      */
     public void likeMovie(final Movie movie,
                           final User user,
+                          final ArrayList<User> users,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -99,7 +100,9 @@ public final class MovieActions {
         }
 
         movie.incrementNumberOfLikes();
-        replaceMovie(user, movie);
+//        replaceMovie(user, movie);
+        for (User user1 : users)
+            replaceMovie(user1, movie);
         user.getLikedMovies().add(new Movie(movie));
 
         output.addPOJO(new Output(user, movie));
@@ -116,6 +119,7 @@ public final class MovieActions {
     public void rateMovie(final int rating,
                           final Movie movie,
                           final User user,
+                          final ArrayList<User> users,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -132,11 +136,35 @@ public final class MovieActions {
             return;
         }
 
+//        if (user.getRatedMovies().contains(movie)) {
+//            output.addPOJO(new Output());
+//            return;
+//        }
+
+//        user.getRatedMovies().remove(movie);
+
+        Ratings newRating = new Ratings(movie.getName(), rating);
+        if (user.getRatings().contains(newRating)) {
+            int index = user.getRatings().indexOf(newRating);
+            int oldRating = user.getRatings().get(index).getRating();
+
+            movie.getRatings().remove((Integer) oldRating);
+
+            user.getRatings().get(index).setRating(rating);
+        } else {
+            user.getRatings().add(newRating);
+        }
+
         movie.getRatings().add(rating);
         movie.setNumRatings(movie.getRatings().size());
-        movie.setRating((int) getAverage(movie.getRatings()));
-        replaceMovie(user, movie);
-        user.getRatedMovies().add(new Movie(movie));
+        movie.setRating(getAverage(movie.getRatings()));
+        for (User user1 : users)
+            replaceMovie(user1, movie);
+
+//        user.getRatedMovies().add(new Movie(movie));
+        if (!user.getRatedMovies().contains(movie)) {
+            user.getRatedMovies().add(new Movie(movie));
+        }
 
         output.addPOJO(new Output(user, movie));
     }
@@ -144,12 +172,16 @@ public final class MovieActions {
     private void replaceMovie(final User user,
                               final Movie movie) {
         int purchaseIdx = user.getPurchasedMovies().indexOf(movie);
-        user.getPurchasedMovies().remove(purchaseIdx);
-        user.getPurchasedMovies().add(purchaseIdx, new Movie(movie));
+        if (purchaseIdx > -1) {
+            user.getPurchasedMovies().remove(purchaseIdx);
+            user.getPurchasedMovies().add(purchaseIdx, new Movie(movie));
+        }
 
         int watchIdx = user.getWatchedMovies().indexOf(movie);
-        user.getWatchedMovies().remove(watchIdx);
-        user.getWatchedMovies().add(watchIdx, new Movie(movie));
+        if (watchIdx > -1) {
+            user.getWatchedMovies().remove(watchIdx);
+            user.getWatchedMovies().add(watchIdx, new Movie(movie));
+        }
 
         int likeIdx = user.getLikedMovies().indexOf(movie);
         if (likeIdx > -1) {

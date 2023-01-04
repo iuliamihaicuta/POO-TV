@@ -44,6 +44,8 @@ public final class Main {
                     database, output, currentPosition);
         }
 
+        currentPosition.getCurrentUser().getRecommendation(output);
+
         writer.writeValue(new File(args[1]), output);
     }
 }

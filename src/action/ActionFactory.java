@@ -27,9 +27,6 @@ public final class ActionFactory {
             case "back" -> {
                 return new BackAction();
             }
-            case "subscribe" -> {
-                return new SubscribeAction();
-            }
             case "database" -> {
                 return new DatabaseAction();
             }

@@ -26,10 +26,28 @@ public final class BackAction implements Action {
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
         if (currentPosition.getCurrentUser() != null && currentPosition.getCurrentPage().getPreviousPage() != null) {
-            currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
+//            currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
+            changePage(database, output, currentPosition);
             return;
         }
 
         output.addPOJO(new Output());
+    }
+
+    private void changePage(final Database database,
+                            final ArrayNode output,
+                            final CurrentPosition currentPosition) {
+//        ActionInput action = new ActionInput();
+//        action.setType("change page");
+//        action.setPage(currentPosition.getCurrentPage().getPreviousPage().getName());
+//
+//        if (currentPosition.getCurrentMovie() != null) {
+//            action.setMovie(currentPosition.getCurrentMovie().getName());
+//        }
+        ChangePageAction changePage = new ChangePageAction();
+//        changePage.execute(action, database, output, currentPosition);
+        changePage.getChangePageOutput(currentPosition.getCurrentPage().getPreviousPage(),
+                database.getMovies(), currentPosition, output);
+        currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
     }
 }

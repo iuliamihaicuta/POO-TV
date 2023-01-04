@@ -8,7 +8,7 @@ import io.ActionInput;
 import io.Output;
 import movie.Movie;
 import movie.MovieList;
-import pages.MoviesPage;
+import pages.types.MoviesPage;
 import pages.Page;
 
 /**
@@ -35,25 +35,11 @@ public final class ChangePageAction implements Action {
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
         Page nextPage;
-        MovieList movieList = database.getMovies();
-        nextPage = getNextPage(currentPosition, movieList, action.getMovie(), action.getPage());
+        nextPage = getNextPage(currentPosition, database.getMovies(),
+                    action.getMovie(), action.getPage());
 
         if (nextPage != null) {
-            switch (nextPage.getName()) {
-                case "logout" -> currentPosition.setCurrentUser(null);
-                case "movies" -> {
-                    String country = currentPosition.getCurrentUser().getCredentials().getCountry();
-                    MoviesPage.getInstance().setMovies(movieList.getPermittedMovies(country));
-
-                    output.addPOJO(new Output(currentPosition.getCurrentUser(),
-                            movieList.getPermittedMovies(country).getMovies()));
-                }
-                case "see details" ->
-                    output.addPOJO(new Output(currentPosition.getCurrentUser(),
-                                    currentPosition.getCurrentMovie()));
-                case "login", "register", "upgrades", "homepage neautentificat" -> { }
-                default -> throw new IllegalArgumentException("Unrecognized action");
-            }
+            getChangePageOutput(nextPage, database.getMovies(), currentPosition, output);
             nextPage.setPreviousPage(currentPosition.getCurrentPage());
             currentPosition.setCurrentPage(nextPage);
             return;
@@ -87,5 +73,26 @@ public final class ChangePageAction implements Action {
         }
 
         return page;
+    }
+
+    public void getChangePageOutput(final Page nextPage,
+                             final MovieList movieList,
+                             final CurrentPosition currentPosition,
+                             final ArrayNode output) {
+        switch (nextPage.getName()) {
+            case "logout" -> currentPosition.setCurrentUser(null);
+            case "movies" -> {
+                String country = currentPosition.getCurrentUser().getCredentials().getCountry();
+                MoviesPage.getInstance().setMovies(movieList.getPermittedMovies(country));
+
+                output.addPOJO(new Output(currentPosition.getCurrentUser(),
+                        movieList.getPermittedMovies(country).getMovies()));
+            }
+            case "see details" ->
+                    output.addPOJO(new Output(currentPosition.getCurrentUser(),
+                            currentPosition.getCurrentMovie()));
+            case "login", "register", "upgrades", "homepage neautentificat" -> { }
+            default -> throw new IllegalArgumentException("Unrecognized action");
+        }
     }
 }

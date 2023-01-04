@@ -1,6 +1,7 @@
-package pages;
+package pages.types;
 
 import movie.MovieList;
+import pages.Page;
 
 import java.util.ArrayList;
 

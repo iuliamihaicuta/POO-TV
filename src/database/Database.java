@@ -32,4 +32,17 @@ public class Database {
     public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
+
+    public ArrayList<User> getSubscribersToGenres(ArrayList<String> genres) {
+        ArrayList<User> subscribers = new ArrayList<>();
+
+        for (String genre : genres) {
+            for (User user : users) {
+                if (user.getSubscribedGenres().contains(genre))
+                    subscribers.add(user);
+            }
+        }
+
+        return subscribers;
+    }
 }

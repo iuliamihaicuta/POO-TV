@@ -2,7 +2,7 @@ package movie;
 
 import action.filter.Contains;
 import action.filter.Sort;
-import pages.MoviesPage;
+import pages.types.MoviesPage;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,6 +1,7 @@
 package io;
 
 import action.filter.Filters;
+import movie.Movie;
 import user.Credentials;
 
 /**
@@ -17,7 +18,8 @@ public class ActionInput {
     private Filters filters;
     private int count;
     private int rate;
-
+    private Movie addedMovie;
+    private String deletedMovie;
     /**
      * Instantiates a new Action input.
      */
@@ -194,4 +196,19 @@ public class ActionInput {
         this.rate = rate;
     }
 
+    public Movie getAddedMovie() {
+        return addedMovie;
+    }
+
+    public void setAddedMovie(final Movie addedMovie) {
+        this.addedMovie = addedMovie;
+    }
+
+    public String getDeletedMovie() {
+        return deletedMovie;
+    }
+
+    public void setDeletedMovie(final String deletedMovie) {
+        this.deletedMovie = deletedMovie;
+    }
 }

@@ -1,5 +1,7 @@
 package pages;
 
+import pages.types.*;
+
 import java.util.ArrayList;
 
 /**

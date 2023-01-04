@@ -13,4 +13,9 @@ public class StandardUser extends User {
         super(user);
         user.getCredentials().setAccountType("standard");
     }
+
+    @Override
+    public void refund() {
+        incrementTokensCount(2);
+    }
 }

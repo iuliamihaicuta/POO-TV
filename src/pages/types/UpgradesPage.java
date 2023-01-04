@@ -1,4 +1,6 @@
-package pages;
+package pages.types;
+
+import pages.Page;
 
 import java.util.ArrayList;
 

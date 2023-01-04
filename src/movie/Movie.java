@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public final class Movie {
     private String name;
-    private int year;
+    private String year;
     private int duration;
     private ArrayList<String> genres = new ArrayList<>();
     private ArrayList<String> actors = new ArrayList<>();
@@ -47,6 +47,10 @@ public final class Movie {
         this.countriesBanned.addAll(movie.countriesBanned);
     }
 
+    public Movie(final String movieName) {
+        this.name = movieName;
+    }
+
     /**
      * Gets name.
      *
@@ -70,7 +74,7 @@ public final class Movie {
      *
      * @return the year
      */
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
@@ -79,7 +83,7 @@ public final class Movie {
      *
      * @param year the year
      */
-    public void setYear(final int year) {
+    public void setYear(final String year) {
         this.year = year;
     }
 
