@@ -9,14 +9,14 @@ public class StandardUser extends User {
      *
      * @param user the user
      */
-    /**
-     * Refund.
-     */
     public StandardUser(final User user) {
         super(user);
         user.getCredentials().setAccountType("standard");
     }
 
+    /**
+     * Refund.
+     */
     @Override
     public void refund() {
         incrementTokensCount(2);
