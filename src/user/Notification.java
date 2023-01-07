@@ -19,7 +19,7 @@ public class Notification {
      * @param movieName the movie name
      * @param message   the message
      */
-    public Notification(String movieName, String message) {
+    public Notification(final String movieName, final String message) {
         this.movieName = movieName;
         this.message = message;
     }
@@ -38,7 +38,7 @@ public class Notification {
      *
      * @param movieName the movie name
      */
-    public void setMovieName(String movieName) {
+    public void setMovieName(final String movieName) {
         this.movieName = movieName;
     }
 
@@ -56,7 +56,7 @@ public class Notification {
      *
      * @param message the message
      */
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 }

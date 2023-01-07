@@ -82,8 +82,5 @@ public final class DatabaseAction implements Action {
 
         database.getMovies().getMovies().remove(deletedMovie);
         MoviesPage.getInstance().getMovies().getMovies().remove(deletedMovie);
-//        if (currentPosition.getCurrentMovie().equals(deletedMovie)) {
-//            currentPosition.setCurrentMovie(null);
-//        }
     }
 }

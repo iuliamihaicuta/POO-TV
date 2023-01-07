@@ -23,13 +23,19 @@ public class PremiumUser extends User {
         this.getCredentials().setAccountType("premium");
     }
 
+    /**
+     * Refund.
+     */
     @Override
     public void refund() {
         incrementNumberOfFreeMovies();
     }
 
+    /**
+     * Get recommendation.
+     */
     @Override
-    public void getRecommendation(ArrayNode output) {
+    public void getRecommendation(final ArrayNode output) {
         ArrayList<Genre> genres = getGenres();
         ArrayList<Movie> movies = MoviesPage.getInstance().getMovies().getMovies();
         movies.sort((o1, o2) -> o2.getNumLikes() - o1.getNumLikes());
@@ -66,19 +72,29 @@ public class PremiumUser extends User {
          *
          * @param genre the genre
          */
-        Genre(String genre) {
+        Genre(final String genre) {
             this.genreName = genre;
             likes = 0;
         }
 
+        /**
+         * Equals method.
+         */
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Genre genre1 = (Genre) o;
             return genreName.equals(genre1.genreName);
         }
 
+        /**
+         * HashCode.
+         */
         @Override
         public int hashCode() {
             return Objects.hash(genreName);
@@ -91,7 +107,7 @@ public class PremiumUser extends User {
         for (Movie movie : getLikedMovies()) {
             for (String movieGenre : movie.getGenres()) {
                 Genre newGenre = new Genre(movieGenre);
-                if(genres.contains(newGenre)) {
+                if (genres.contains(newGenre)) {
                     int index = genres.indexOf(newGenre);
                     genres.get(index).likes++;
                 } else {
@@ -104,7 +120,7 @@ public class PremiumUser extends User {
         return genres;
     }
 
-    private void sortGenres(ArrayList<Genre> genres) {
+    private void sortGenres(final ArrayList<Genre> genres) {
         genres.sort(Comparator.comparing(o -> o.genreName));
         genres.sort((o1, o2) -> o2.likes - o1.likes);
     }

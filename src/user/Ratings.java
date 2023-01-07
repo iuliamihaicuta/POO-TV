@@ -34,7 +34,7 @@ public class Ratings {
      *
      * @param movieName the movie name
      */
-    public void setMovieName(String movieName) {
+    public void setMovieName(final String movieName) {
         this.movieName = movieName;
     }
 
@@ -52,18 +52,28 @@ public class Ratings {
      *
      * @param rating the rating
      */
-    public void setRating(int rating) {
+    public void setRating(final int rating) {
         this.rating = rating;
     }
 
+    /**
+     * Equals method.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Ratings ratings = (Ratings) o;
         return movieName.equals(ratings.movieName);
     }
 
+    /**
+     * HashCode.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(movieName);
