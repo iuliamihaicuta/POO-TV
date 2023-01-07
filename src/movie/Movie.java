@@ -47,6 +47,11 @@ public final class Movie {
         this.countriesBanned.addAll(movie.countriesBanned);
     }
 
+    /**
+     * Instantiates a new Movie.
+     *
+     * @param movieName the movie name
+     */
     public Movie(final String movieName) {
         this.name = movieName;
     }
@@ -201,6 +206,8 @@ public final class Movie {
      * @param rating the rating
      */
     public void setRating(final double rating) {
+//        BigDecimal bd = BigDecimal.valueOf(amount).setScale(2, RoundingMode.FLOOR);
+//        this.rating = bd.doubleValue();
         this.rating = rating;
     }
 

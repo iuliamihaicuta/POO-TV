@@ -67,10 +67,20 @@ public abstract class Page {
         this.actions = actions;
     }
 
+    /**
+     * Gets previous page.
+     *
+     * @return the previous page
+     */
     public Page getPreviousPage() {
         return previousPage;
     }
 
+    /**
+     * Sets previous page.
+     *
+     * @param previousPage the previous page
+     */
     public void setPreviousPage(Page previousPage) {
         this.previousPage = previousPage;
     }

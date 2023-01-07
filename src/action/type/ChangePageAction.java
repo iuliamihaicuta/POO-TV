@@ -75,6 +75,14 @@ public final class ChangePageAction implements Action {
         return page;
     }
 
+    /**
+     * Gets change page output.
+     *
+     * @param nextPage        the next page
+     * @param movieList       the movie list
+     * @param currentPosition the current position
+     * @param output          the output
+     */
     public void getChangePageOutput(final Page nextPage,
                              final MovieList movieList,
                              final CurrentPosition currentPosition,
@@ -91,7 +99,7 @@ public final class ChangePageAction implements Action {
             case "see details" ->
                     output.addPOJO(new Output(currentPosition.getCurrentUser(),
                             currentPosition.getCurrentMovie()));
-            case "login", "register", "upgrades", "homepage neautentificat" -> { }
+            case "login", "register", "upgrades", "homepage neautentificat", "homepage autentificat" -> { }
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }

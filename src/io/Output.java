@@ -31,11 +31,6 @@ public final class Output {
         this.currentMoviesList = new ArrayList<>();
     }
 
-    public Output(String error) {
-        this.error = error;
-        this.currentMoviesList = new ArrayList<>();
-    }
-
     /**
      * Instantiates a new Output.
      *
@@ -45,6 +40,11 @@ public final class Output {
     public Output(final User currentUser,
                   final ArrayList<Movie> movies) {
         this.currentUser = new User(currentUser);
+
+        if (movies == null) {
+            this.currentMoviesList = null;
+            return;
+        }
 
         this.currentMoviesList = new ArrayList<>();
         for (Movie movie: movies) {

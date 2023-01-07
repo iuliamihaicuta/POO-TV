@@ -13,7 +13,13 @@ import user.User;
 
 import java.util.ArrayList;
 
+/**
+ * The type Database action.
+ */
 public final class DatabaseAction implements Action {
+    /**
+     * Instantiates a new Database action.
+     */
     public DatabaseAction() {
     }
     /**
@@ -50,6 +56,9 @@ public final class DatabaseAction implements Action {
         database.getMovies().getMovies().add(movie);
         ArrayList<User> subscribers = database.getSubscribersToGenres(movie.getGenres());
         Notification notification = new Notification(movie.getName(), "ADD");
+        for (User subscriber : subscribers) {
+            subscriber.getNotifications().add(notification);
+        }
     }
 
     private void deleteMovie(final ActionInput action,

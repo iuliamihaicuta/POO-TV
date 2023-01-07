@@ -65,9 +65,9 @@ public final class OnPageAction implements Action {
             case "search" -> search(action, permittedMovies, output, currentPosition);
             case "filter" -> filter(action, permittedMovies, output, currentPosition);
             case "purchase", "watch", "like", "rate" ->
-                    seeDetailsActions(output, currentPosition, database.getUsers(), action);
+                    seeDetailsActions(output, currentPosition, database, action);
             case "buy tokens" -> buyTokens(output, currentPosition, action);
-            case "buy premium account" -> buyPremiumAccount(output, currentPosition);
+            case "buy premium account" -> buyPremiumAccount(output, currentPosition, database);
             case "subscribe" -> subscribe(action, currentPosition, output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
@@ -171,7 +171,7 @@ public final class OnPageAction implements Action {
 
     private void seeDetailsActions(final ArrayNode output,
                                   final CurrentPosition currentPosition,
-                                  final ArrayList<User> users,
+                                  final Database database,
                                   final ActionInput action) {
         if (!currentPosition.getCurrentPage().getName().equals("see details")) {
             output.addPOJO(new Output());
@@ -188,9 +188,9 @@ public final class OnPageAction implements Action {
                 case "watch" -> movieAction.watchMovie(movie,
                                 currentPosition.getCurrentUser(), output);
                 case "like" -> movieAction.likeMovie(movie,
-                                currentPosition.getCurrentUser(), users, output);
+                                currentPosition.getCurrentUser(), database, output);
                 case "rate" -> movieAction.rateMovie(action.getRate(), movie,
-                                currentPosition.getCurrentUser(), users, output);
+                                currentPosition.getCurrentUser(), database, output);
                 default -> throw new IllegalArgumentException("Unrecognized action");
             }
 
@@ -221,7 +221,8 @@ public final class OnPageAction implements Action {
     }
 
     private void buyPremiumAccount(final ArrayNode output,
-                                          final CurrentPosition currentPosition) {
+                                   final CurrentPosition currentPosition,
+                                   final Database database) {
         if (!currentPosition.getCurrentPage().getName().equals("upgrades")) {
             output.addPOJO(new Output());
             return;
@@ -238,7 +239,11 @@ public final class OnPageAction implements Action {
 
         user.setTokensCount(userTokens - PREMIUM_ACCOUNT_PRICE);
 
-        currentPosition.setCurrentUser(new PremiumUser(user));
+        User newUser = new PremiumUser(user);
+        currentPosition.setCurrentUser(newUser);
+        database.getUsers().remove(user);
+        database.getUsers().add(newUser);
+
     }
 
     private void subscribe(final ActionInput action,
@@ -247,7 +252,7 @@ public final class OnPageAction implements Action {
         if (currentPosition.getCurrentPage().getName().equals("see details")
                 && currentPosition.getCurrentMovie().getGenres().contains(action.getSubscribedGenre())
                 && !currentPosition.getCurrentUser().getSubscribedGenres().contains(action.getSubscribedGenre())) {
-            currentPosition.getCurrentUser().getSubscribedGenres().add(action.getSubscribedGenre());
+            currentPosition.getCurrentUser().getSubscribedGenres().add(new String(action.getSubscribedGenre()));
             return;
         }
 

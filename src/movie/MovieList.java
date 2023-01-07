@@ -60,7 +60,7 @@ public final class MovieList {
 
     private void sortMoviesByRatings(final int mode) {
         if (mode == DECREASING) {
-            movies.sort((o1, o2) -> (int) (o2.getRating() - o1.getRating()));
+            movies.sort((o1, o2) -> Double.compare(o2.getRating(), o1.getRating()));
             return;
         }
 

@@ -1,9 +1,11 @@
 package user;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import movie.Movie;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static constansts.Constants.NUMBER_FREE_MOVIES;
 
@@ -60,7 +62,12 @@ public class User {
         this.subscribedGenres.addAll(user.subscribedGenres);
     }
 
-    public User(Credentials credentials) {
+    /**
+     * Instantiates a new User.
+     *
+     * @param credentials the credentials
+     */
+    public User(final Credentials credentials) {
         this.credentials = new Credentials();
         this.credentials.setName(credentials.getName());
         this.credentials.setAccountType(credentials.getAccountType());
@@ -195,27 +202,57 @@ public class User {
         this.ratedMovies = ratedMovies;
     }
 
+    /**
+     * Gets notifications.
+     *
+     * @return the notifications
+     */
     public ArrayList<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(ArrayList<Notification> notifications) {
+    /**
+     * Sets notifications.
+     *
+     * @param notifications the notifications
+     */
+    public void setNotifications(final ArrayList<Notification> notifications) {
         this.notifications = notifications;
     }
 
+    /**
+     * Gets subscribed genres.
+     *
+     * @return the subscribed genres
+     */
     public ArrayList<String> getSubscribedGenres() {
         return subscribedGenres;
     }
 
-    public void setSubscribedGenres(ArrayList<String> subscribedGenres) {
+    /**
+     * Sets subscribed genres.
+     *
+     * @param subscribedGenres the subscribed genres
+     */
+    public void setSubscribedGenres(final ArrayList<String> subscribedGenres) {
         this.subscribedGenres = subscribedGenres;
     }
 
+    /**
+     * Gets ratings.
+     *
+     * @return the ratings
+     */
     public ArrayList<Ratings> getRatings() {
         return ratings;
     }
 
-    public void setRatings(ArrayList<Ratings> ratings) {
+    /**
+     * Sets ratings.
+     *
+     * @param ratings the ratings
+     */
+    public void setRatings(final ArrayList<Ratings> ratings) {
         this.ratings = ratings;
     }
 
@@ -226,6 +263,9 @@ public class User {
         numFreePremiumMovies--;
     }
 
+    /**
+     * Increment number of free movies.
+     */
     public void incrementNumberOfFreeMovies() {
         numFreePremiumMovies++;
     }
@@ -239,10 +279,21 @@ public class User {
         tokensCount -= tokens;
     }
 
+    /**
+     * Increment tokens count.
+     *
+     * @param tokens the tokens
+     */
     public void incrementTokensCount(final int tokens) {
         tokensCount += tokens;
     }
 
+    /**
+     * Remove movie boolean.
+     *
+     * @param movie the movie
+     * @return the boolean
+     */
     public boolean removeMovie(final Movie movie) {
         likedMovies.remove(movie);
         watchedMovies.remove(movie);
@@ -250,9 +301,40 @@ public class User {
         return purchasedMovies.remove(movie);
     }
 
+    /**
+     * Equals method.
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return credentials.equals(user.credentials);
+    }
+
+    /**
+     * HashCode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(credentials);
+    }
+
+    /**
+     * Refund.
+     */
     public void refund() {
     }
 
-    public void getRecommendation(ArrayNode output) {
+    /**
+     * Gets recommendation.
+     *
+     * @param output the output
+     */
+    public void getRecommendation(final ArrayNode output) {
     }
 }

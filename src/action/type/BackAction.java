@@ -7,8 +7,14 @@ import database.Database;
 import io.ActionInput;
 import io.Output;
 
+/**
+ * The type Back action.
+ */
 public final class BackAction implements Action {
 
+    /**
+     * Instantiates a new Back action.
+     */
     public BackAction() {
     }
 

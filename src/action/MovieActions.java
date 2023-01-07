@@ -1,6 +1,7 @@
 package action;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import database.Database;
 import io.Output;
 import movie.Movie;
 import user.Ratings;
@@ -81,13 +82,14 @@ public final class MovieActions {
     /**
      * Like movie.
      *
-     * @param movie  the movie
-     * @param user   the user
-     * @param output the output
+     * @param movie    the movie
+     * @param user     the user
+     * @param database the database
+     * @param output   the output
      */
     public void likeMovie(final Movie movie,
                           final User user,
-                          final ArrayList<User> users,
+                          final Database database,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -101,7 +103,7 @@ public final class MovieActions {
 
         movie.incrementNumberOfLikes();
 //        replaceMovie(user, movie);
-        for (User user1 : users)
+        for (User user1 : database.getUsers())
             replaceMovie(user1, movie);
         user.getLikedMovies().add(new Movie(movie));
 
@@ -111,15 +113,16 @@ public final class MovieActions {
     /**
      * Rate movie.
      *
-     * @param rating the rating
-     * @param movie  the movie
-     * @param user   the user
-     * @param output the output
+     * @param rating   the rating
+     * @param movie    the movie
+     * @param user     the user
+     * @param database the database
+     * @param output   the output
      */
     public void rateMovie(final int rating,
                           final Movie movie,
                           final User user,
-                          final ArrayList<User> users,
+                          final Database database,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -136,13 +139,6 @@ public final class MovieActions {
             return;
         }
 
-//        if (user.getRatedMovies().contains(movie)) {
-//            output.addPOJO(new Output());
-//            return;
-//        }
-
-//        user.getRatedMovies().remove(movie);
-
         Ratings newRating = new Ratings(movie.getName(), rating);
         if (user.getRatings().contains(newRating)) {
             int index = user.getRatings().indexOf(newRating);
@@ -158,7 +154,7 @@ public final class MovieActions {
         movie.getRatings().add(rating);
         movie.setNumRatings(movie.getRatings().size());
         movie.setRating(getAverage(movie.getRatings()));
-        for (User user1 : users)
+        for (User user1 : database.getUsers())
             replaceMovie(user1, movie);
 
 //        user.getRatedMovies().add(new Movie(movie));

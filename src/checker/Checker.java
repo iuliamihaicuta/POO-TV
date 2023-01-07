@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Checker.
+ */
 public final class Checker {
     private static int gitScore;
     private static int readmeScore;
@@ -53,6 +56,8 @@ public final class Checker {
 
     /**
      * This method is used to calculate total score of the implementation and checkstyle
+     *
+     * @throws IOException the io exception
      */
     public static void calculateScore() throws IOException {
         System.out.println();
@@ -96,6 +101,8 @@ public final class Checker {
 
     /**
      * This method calculates the score of only one single test
+     *
+     * @param input the input
      * @return the score of that test
      */
     public static int calculateScore(final String input) {

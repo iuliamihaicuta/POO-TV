@@ -20,6 +20,7 @@ public class ActionInput {
     private int rate;
     private Movie addedMovie;
     private String deletedMovie;
+
     /**
      * Instantiates a new Action input.
      */
@@ -98,10 +99,20 @@ public class ActionInput {
         this.feature = feature;
     }
 
+    /**
+     * Gets subscribed genre.
+     *
+     * @return the subscribed genre
+     */
     public String getSubscribedGenre() {
         return subscribedGenre;
     }
 
+    /**
+     * Sets subscribed genre.
+     *
+     * @param subscribedGenre the subscribed genre
+     */
     public void setSubscribedGenre(String subscribedGenre) {
         this.subscribedGenre = subscribedGenre;
     }
@@ -196,18 +207,38 @@ public class ActionInput {
         this.rate = rate;
     }
 
+    /**
+     * Gets added movie.
+     *
+     * @return the added movie
+     */
     public Movie getAddedMovie() {
         return addedMovie;
     }
 
+    /**
+     * Sets added movie.
+     *
+     * @param addedMovie the added movie
+     */
     public void setAddedMovie(final Movie addedMovie) {
         this.addedMovie = addedMovie;
     }
 
+    /**
+     * Gets deleted movie.
+     *
+     * @return the deleted movie
+     */
     public String getDeletedMovie() {
         return deletedMovie;
     }
 
+    /**
+     * Sets deleted movie.
+     *
+     * @param deletedMovie the deleted movie
+     */
     public void setDeletedMovie(final String deletedMovie) {
         this.deletedMovie = deletedMovie;
     }
