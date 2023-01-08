@@ -32,8 +32,6 @@ public final class Main {
         Input input = objectMapper.readValue(new File(args[0]), Input.class);
         ArrayNode output = objectMapper.createArrayNode();
 
-//        ArrayList<User> users = input.getUsersList();
-//        MovieList movies = new MovieList(input.getMovies());
         Database database = new Database(new MovieList(input.getMovies()), input.getUsersList());
         ArrayList<Action> actions = input.getActionsList();
 
