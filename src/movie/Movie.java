@@ -206,8 +206,6 @@ public final class Movie {
      * @param rating the rating
      */
     public void setRating(final double rating) {
-//        BigDecimal bd = BigDecimal.valueOf(amount).setScale(2, RoundingMode.FLOOR);
-//        this.rating = bd.doubleValue();
         this.rating = rating;
     }
 
