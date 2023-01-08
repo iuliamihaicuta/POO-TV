@@ -1,4 +1,6 @@
-package user;
+package user.factory;
+
+import user.User;
 
 /**
  * The type User factory.

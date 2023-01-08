@@ -1,9 +1,11 @@
-package user;
+package user.factory;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.Output;
 import movie.Movie;
 import pages.types.MoviesPage;
+import user.User;
+import user.attributes.Notification;
 
 import java.util.ArrayList;
 import java.util.Comparator;

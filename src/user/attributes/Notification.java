@@ -1,4 +1,4 @@
-package user;
+package user.attributes;
 
 /**
  * The type Notification.
@@ -6,12 +6,6 @@ package user;
 public class Notification {
     private String movieName;
     private String message;
-
-    /**
-     * Instantiates a new Notification.
-     */
-    public Notification() {
-    }
 
     /**
      * Instantiates a new Notification.
