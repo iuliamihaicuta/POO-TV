@@ -63,6 +63,8 @@ public class User {
         this.notifications.addAll(user.notifications);
         this.subscribedGenres = new ArrayList<>();
         this.subscribedGenres.addAll(user.subscribedGenres);
+        this.ratings = new ArrayList<>();
+        this.ratings.addAll(user.ratings);
     }
 
     /**
