@@ -13,14 +13,14 @@ import movie.MovieList;
 import pages.types.AuthorisedHomepage;
 import pages.types.MoviesPage;
 import pages.types.UnauthHomepage;
-import user.Credentials;
+import user.attributes.Credentials;
 import currentPosition.CurrentPosition;
-import user.PremiumUser;
+import user.factory.PremiumUser;
 import user.User;
-import user.UserFactory;
+import user.factory.UserFactory;
 
 import java.util.ArrayList;
-import static constansts.Constants.PREMIUM_ACCOUNT_PRICE;
+import static constants.Constants.PREMIUM_ACCOUNT_PRICE;
 
 /**
  * The type On page action.
@@ -113,8 +113,8 @@ public final class OnPageAction implements Action {
             }
         }
 
-        User newUser = UserFactory.createUser(action.getCredentials().getAccountType(), new User(action.getCredentials()));
-//        newUser.setCredentials(action.getCredentials());
+        User newUser = UserFactory.createUser(action.getCredentials().getAccountType(),
+                new User(action.getCredentials()));
         users.add(newUser);
 
         currentPosition.setCurrentUser(newUser);
@@ -252,7 +252,7 @@ public final class OnPageAction implements Action {
         if (currentPosition.getCurrentPage().getName().equals("see details")
                 && currentPosition.getCurrentMovie().getGenres().contains(action.getSubscribedGenre())
                 && !currentPosition.getCurrentUser().getSubscribedGenres().contains(action.getSubscribedGenre())) {
-            currentPosition.getCurrentUser().getSubscribedGenres().add(new String(action.getSubscribedGenre()));
+            currentPosition.getCurrentUser().getSubscribedGenres().add(action.getSubscribedGenre());
             return;
         }
 

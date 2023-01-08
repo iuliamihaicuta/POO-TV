@@ -3,11 +3,14 @@ package user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import movie.Movie;
+import user.attributes.Credentials;
+import user.attributes.Notification;
+import user.attributes.Ratings;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static constansts.Constants.NUMBER_FREE_MOVIES;
+import static constants.Constants.NUMBER_FREE_MOVIES;
 
 /**
  * The type User.

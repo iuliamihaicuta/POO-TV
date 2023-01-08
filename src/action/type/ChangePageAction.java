@@ -99,7 +99,8 @@ public final class ChangePageAction implements Action {
             case "see details" ->
                     output.addPOJO(new Output(currentPosition.getCurrentUser(),
                             currentPosition.getCurrentMovie()));
-            case "login", "register", "upgrades", "homepage neautentificat", "homepage autentificat" -> { }
+            case "login", "register", "upgrades",
+                    "homepage neautentificat", "homepage autentificat" -> { }
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }

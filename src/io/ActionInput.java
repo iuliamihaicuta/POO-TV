@@ -2,7 +2,7 @@ package io;
 
 import action.filter.Filters;
 import movie.Movie;
-import user.Credentials;
+import user.attributes.Credentials;
 
 /**
  * The type Action input.
@@ -113,7 +113,7 @@ public class ActionInput {
      *
      * @param subscribedGenre the subscribed genre
      */
-    public void setSubscribedGenre(String subscribedGenre) {
+    public void setSubscribedGenre(final String subscribedGenre) {
         this.subscribedGenre = subscribedGenre;
     }
 

@@ -31,7 +31,8 @@ public final class BackAction implements Action {
                         final Database database,
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
-        if (currentPosition.getCurrentUser() != null && currentPosition.getCurrentPage().getPreviousPage() != null) {
+        if (currentPosition.getCurrentUser() != null
+                && currentPosition.getCurrentPage().getPreviousPage() != null) {
 //            currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
             changePage(database, output, currentPosition);
             return;

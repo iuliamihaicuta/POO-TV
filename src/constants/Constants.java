@@ -1,4 +1,4 @@
-package constansts;
+package constants;
 
 /**
  * The type Constants.

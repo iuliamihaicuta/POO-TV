@@ -4,7 +4,7 @@ import action.Action;
 import action.ActionFactory;
 import movie.Movie;
 import user.User;
-import user.UserFactory;
+import user.factory.UserFactory;
 
 import java.util.ArrayList;
 

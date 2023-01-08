@@ -1,6 +1,12 @@
 package pages;
 
-import pages.types.*;
+import pages.types.LoginPage;
+import pages.types.RegisterPage;
+import pages.types.MoviesPage;
+import pages.types.UpgradesPage;
+import pages.types.AuthorisedHomepage;
+import pages.types.SeeDetailsPage;
+import pages.types.UnauthHomepage;
 
 import java.util.ArrayList;
 
@@ -81,7 +87,7 @@ public abstract class Page {
      *
      * @param previousPage the previous page
      */
-    public void setPreviousPage(Page previousPage) {
+    public void setPreviousPage(final Page previousPage) {
         this.previousPage = previousPage;
     }
 

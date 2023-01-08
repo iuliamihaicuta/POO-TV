@@ -1,6 +1,9 @@
 package action;
 
-import action.type.*;
+import action.type.ChangePageAction;
+import action.type.OnPageAction;
+import action.type.DatabaseAction;
+import action.type.BackAction;
 import io.ActionInput;
 
 /**

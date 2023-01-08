@@ -24,7 +24,7 @@ public class Database {
      * @param movies the movies
      * @param users  the users
      */
-    public Database(MovieList movies, ArrayList<User> users) {
+    public Database(final MovieList movies, final ArrayList<User> users) {
         this.movies = movies;
         this.users = users;
     }
@@ -43,7 +43,7 @@ public class Database {
      *
      * @param movies the movies
      */
-    public void setMovies(MovieList movies) {
+    public void setMovies(final MovieList movies) {
         this.movies = movies;
     }
 
@@ -61,7 +61,7 @@ public class Database {
      *
      * @param users the users
      */
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(final ArrayList<User> users) {
         this.users = users;
     }
 
@@ -71,13 +71,14 @@ public class Database {
      * @param genres the genres
      * @return the subscribers to genres
      */
-    public ArrayList<User> getSubscribersToGenres(ArrayList<String> genres) {
+    public ArrayList<User> getSubscribersToGenres(final ArrayList<String> genres) {
         ArrayList<User> subscribers = new ArrayList<>();
 
         for (String genre : genres) {
             for (User user : users) {
-                if (user.getSubscribedGenres().contains(genre) && !subscribers.contains(user))
+                if (user.getSubscribedGenres().contains(genre) && !subscribers.contains(user)) {
                     subscribers.add(user);
+                }
             }
         }
 

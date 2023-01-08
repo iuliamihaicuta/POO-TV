@@ -1,4 +1,4 @@
-package user;
+package user.attributes;
 
 import java.util.Objects;
 

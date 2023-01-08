@@ -7,8 +7,8 @@ import pages.types.MoviesPage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import static constansts.Constants.DECREASING;
-import static constansts.Constants.INCREASING;
+import static constants.Constants.DECREASING;
+import static constants.Constants.INCREASING;
 
 /**
  * The type Movie list.

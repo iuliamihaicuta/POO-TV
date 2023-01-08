@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Database;
 import io.Output;
 import movie.Movie;
-import user.Ratings;
+import user.attributes.Ratings;
 import user.User;
 
 import java.util.ArrayList;
 
-import static constansts.Constants.*;
+import static constants.Constants.MOVIE_PRICE;
+import static constants.Constants.MIN_RATING;
+import static constants.Constants.MAX_RATING;
 
 /**
  * The type Movie actions.
@@ -102,9 +104,10 @@ public final class MovieActions {
         }
 
         movie.incrementNumberOfLikes();
-//        replaceMovie(user, movie);
-        for (User user1 : database.getUsers())
+
+        for (User user1 : database.getUsers()) {
             replaceMovie(user1, movie);
+        }
         user.getLikedMovies().add(new Movie(movie));
 
         output.addPOJO(new Output(user, movie));
@@ -154,10 +157,10 @@ public final class MovieActions {
         movie.getRatings().add(rating);
         movie.setNumRatings(movie.getRatings().size());
         movie.setRating(getAverage(movie.getRatings()));
-        for (User user1 : database.getUsers())
+        for (User user1 : database.getUsers()) {
             replaceMovie(user1, movie);
+        }
 
-//        user.getRatedMovies().add(new Movie(movie));
         if (!user.getRatedMovies().contains(movie)) {
             user.getRatedMovies().add(new Movie(movie));
         }

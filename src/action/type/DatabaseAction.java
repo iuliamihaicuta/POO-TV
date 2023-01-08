@@ -8,7 +8,7 @@ import io.ActionInput;
 import io.Output;
 import movie.Movie;
 import pages.types.MoviesPage;
-import user.Notification;
+import user.attributes.Notification;
 import user.User;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public final class DatabaseAction implements Action {
 
     private void addMovie(final ActionInput action,
                           final Database database,
-                          ArrayNode output) {
+                          final ArrayNode output) {
         Movie movie = action.getAddedMovie();
 
         if (database.getMovies().getMovies().contains(movie)) {
@@ -63,7 +63,7 @@ public final class DatabaseAction implements Action {
 
     private void deleteMovie(final ActionInput action,
                              final Database database,
-                             ArrayNode output,
+                             final ArrayNode output,
                              final CurrentPosition currentPosition) {
         Movie deletedMovie = new Movie(action.getDeletedMovie());
         if (!database.getMovies().getMovies().contains(deletedMovie)) {
