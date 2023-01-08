@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * The type Premium user.
  */
-public class PremiumUser extends User {
+public final class PremiumUser extends User {
     /**
      * Instantiates a new Premium user.
      *
@@ -65,6 +65,30 @@ public class PremiumUser extends User {
         output.addPOJO(new Output(this, (ArrayList<Movie>) null));
     }
 
+    private ArrayList<Genre> getGenres() {
+        ArrayList<Genre> genres = new ArrayList<>();
+
+        for (Movie movie : getLikedMovies()) {
+            for (String movieGenre : movie.getGenres()) {
+                Genre newGenre = new Genre(movieGenre);
+                if (genres.contains(newGenre)) {
+                    int index = genres.indexOf(newGenre);
+                    genres.get(index).likes++;
+                } else {
+                    genres.add(newGenre);
+                }
+            }
+        }
+
+        sortGenres(genres);
+        return genres;
+    }
+
+    private void sortGenres(final ArrayList<Genre> genres) {
+        genres.sort(Comparator.comparing(o -> o.genreName));
+        genres.sort((o1, o2) -> o2.likes - o1.likes);
+    }
+
     private static class Genre {
         private final String genreName;
         private int likes;
@@ -101,29 +125,5 @@ public class PremiumUser extends User {
         public int hashCode() {
             return Objects.hash(genreName);
         }
-    }
-
-    private ArrayList<Genre> getGenres() {
-        ArrayList<Genre> genres = new ArrayList<>();
-
-        for (Movie movie : getLikedMovies()) {
-            for (String movieGenre : movie.getGenres()) {
-                Genre newGenre = new Genre(movieGenre);
-                if (genres.contains(newGenre)) {
-                    int index = genres.indexOf(newGenre);
-                    genres.get(index).likes++;
-                } else {
-                    genres.add(newGenre);
-                }
-            }
-        }
-
-        sortGenres(genres);
-        return genres;
-    }
-
-    private void sortGenres(final ArrayList<Genre> genres) {
-        genres.sort(Comparator.comparing(o -> o.genreName));
-        genres.sort((o1, o2) -> o2.likes - o1.likes);
     }
 }

@@ -5,7 +5,7 @@ import user.User;
 /**
  * The type Standard user.
  */
-public class StandardUser extends User {
+public final class StandardUser extends User {
     /**
      * Instantiates a new Standard user.
      *
