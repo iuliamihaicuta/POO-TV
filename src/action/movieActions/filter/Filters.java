@@ -1,4 +1,4 @@
-package action.filter;
+package action.movieActions.filter;
 
 /**
  * The type Filters.

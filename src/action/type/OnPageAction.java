@@ -1,9 +1,9 @@
 package action.type;
 
 import action.Action;
-import action.MovieActions;
-import action.filter.Contains;
-import action.filter.Sort;
+import action.movieActions.command.*;
+import action.movieActions.filter.Contains;
+import action.movieActions.filter.Sort;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import currentPosition.CurrentPosition;
 import database.Database;
@@ -164,16 +164,18 @@ public final class OnPageAction extends Action {
         }
 
         Movie movie = currentPosition.getCurrentMovie();
-        MovieActions movieAction = new MovieActions();
 
         if (movie != null) {
+            CurrentPosition.getInstance().setCurrentRating(getActionInput().getRate());
+            Executor executor = new Executor();
             switch (getActionInput().getFeature()) {
-                case "purchase" -> movieAction.purchaseMovie(output);
-                case "watch" -> movieAction.watchMovie(output);
-                case "like" -> movieAction.likeMovie(output);
-                case "rate" -> movieAction.rateMovie(getActionInput().getRate(), output);
+                case "purchase" -> executor.executeOperation(new PurchaseMovie(output));
+                case "watch" -> executor.executeOperation(new WatchMovie(output));
+                case "like" -> executor.executeOperation(new LikeMovie(output));
+                case "rate" -> executor.executeOperation(new RateMovie(output));
                 default -> throw new IllegalArgumentException("Unrecognized action");
             }
+
 
             return;
         }

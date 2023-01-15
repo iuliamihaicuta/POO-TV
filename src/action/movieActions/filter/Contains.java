@@ -1,4 +1,4 @@
-package action.filter;
+package action.movieActions.filter;
 
 import java.util.ArrayList;
 

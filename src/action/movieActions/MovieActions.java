@@ -1,18 +1,16 @@
-package action;
+package action.movieActions;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import currentPosition.CurrentPosition;
 import database.Database;
 import io.Output;
 import movie.Movie;
-import user.attributes.Ratings;
 import user.User;
+import user.attributes.Ratings;
 
 import java.util.ArrayList;
 
-import static constants.Constants.MOVIE_PRICE;
-import static constants.Constants.MIN_RATING;
-import static constants.Constants.MAX_RATING;
+import static constants.Constants.*;
 
 /**
  * The type Movie actions.
@@ -103,13 +101,12 @@ public final class MovieActions {
     /**
      * Rate movie.
      *
-     * @param rating   the rating
      * @param output   the output
      */
-    public void rateMovie(final int rating,
-                          final ArrayNode output) {
+    public void rateMovie(final ArrayNode output) {
         User user = CurrentPosition.getInstance().getCurrentUser();
         Movie movie = CurrentPosition.getInstance().getCurrentMovie();
+        int rating = CurrentPosition.getInstance().getCurrentRating();
 
         if (!wasMovieWatched()) {
             output.addPOJO(new Output());
@@ -189,4 +186,5 @@ public final class MovieActions {
                 .mapToInt(a -> a)
                 .average().orElse(0);
     }
+
 }

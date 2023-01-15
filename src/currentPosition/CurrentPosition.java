@@ -12,6 +12,7 @@ public class CurrentPosition {
     private User currentUser;
     private Page currentPage;
     private Movie currentMovie;
+    private int currentRating;
     private static CurrentPosition instance = null;
 
     /**
@@ -73,6 +74,14 @@ public class CurrentPosition {
      */
     public void setCurrentMovie(final Movie currentMovie) {
         this.currentMovie = currentMovie;
+    }
+
+    public int getCurrentRating() {
+        return currentRating;
+    }
+
+    public void setCurrentRating(int currentRating) {
+        this.currentRating = currentRating;
     }
 
     public static CurrentPosition getInstance() {

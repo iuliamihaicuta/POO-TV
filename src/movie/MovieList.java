@@ -1,7 +1,7 @@
 package movie;
 
-import action.filter.Contains;
-import action.filter.Sort;
+import action.movieActions.filter.Contains;
+import action.movieActions.filter.Sort;
 import currentPosition.CurrentPosition;
 import pages.Page;
 import pages.types.MoviesPage;
