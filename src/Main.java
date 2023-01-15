@@ -35,17 +35,15 @@ public final class Main {
         Database.setInstance(new MovieList(input.getMovies()), input.getUsersList());
         ArrayList<Action> actions = input.getActionsList();
 
-        CurrentPosition currentPosition = new CurrentPosition();
-
-        for (int i = 0; i < actions.size(); ++i) {
-            actions.get(i).execute(input.getActions().get(i),
-                    output, currentPosition);
+        for (Action action : actions) {
+            action.execute(output);
         }
 
-        currentPosition.getCurrentUser().getRecommendation(output);
+        CurrentPosition.getInstance().getCurrentUser().getRecommendation(output);
 
         writer.writeValue(new File(args[1]), output);
 
         Database.setInstance(null);
+        CurrentPosition.setInstance(null);
     }
 }

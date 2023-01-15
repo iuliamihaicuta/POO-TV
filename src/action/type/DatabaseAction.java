@@ -2,40 +2,36 @@ package action.type;
 
 import action.Action;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import currentPosition.CurrentPosition;
 import database.Database;
 import io.ActionInput;
 import io.Output;
 import movie.Movie;
 import pages.types.MoviesPage;
-import user.attributes.Notification;
 import user.User;
+import user.attributes.Notification;
 
 import java.util.ArrayList;
 
 /**
  * The type Database action.
  */
-public final class DatabaseAction implements Action {
+public final class DatabaseAction extends Action {
     /**
      * Instantiates a new Database action.
      */
-    public DatabaseAction() {
+    public DatabaseAction(ActionInput actionInput) {
+        super(actionInput);
     }
     /**
      * Execute action.
      *
-     * @param action          the action
      * @param output          the output
-     * @param currentPosition the current position
      */
     @Override
-    public void execute(final ActionInput action,
-                        final ArrayNode output,
-                        final CurrentPosition currentPosition) {
-        switch (action.getFeature()) {
-            case "add" -> addMovie(action, output);
-            case "delete" -> deleteMovie(action, output);
+    public void execute(final ArrayNode output) {
+        switch (getActionInput().getFeature()) {
+            case "add" -> addMovie(getActionInput(), output);
+            case "delete" -> deleteMovie(getActionInput(), output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }

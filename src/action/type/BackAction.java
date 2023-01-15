@@ -10,39 +10,34 @@ import io.Output;
 /**
  * The type Back action.
  */
-public final class BackAction implements Action {
+public final class BackAction extends Action {
 
     /**
      * Instantiates a new Back action.
      */
-    public BackAction() {
+    public BackAction(ActionInput actionInput) {
+        super(actionInput);
     }
 
     /**
      * Execute action.
-     *
-     * @param action          the action
      * @param output          the output
-     * @param currentPosition the current position
      */
     @Override
-    public void execute(final ActionInput action,
-                        final ArrayNode output,
-                        final CurrentPosition currentPosition) {
-        if (currentPosition.getCurrentUser() != null
-                && currentPosition.getCurrentPage().getPreviousPage() != null) {
-            changePage(output, currentPosition);
+    public void execute(final ArrayNode output) {
+        if (CurrentPosition.getInstance().getCurrentUser() != null
+                && CurrentPosition.getInstance().getCurrentPage().getPreviousPage() != null) {
+            changePage(output);
             return;
         }
 
         output.addPOJO(new Output());
     }
 
-    private void changePage(final ArrayNode output,
-                            final CurrentPosition currentPosition) {
-        ChangePageAction changePage = new ChangePageAction();
-        changePage.getChangePageOutput(currentPosition.getCurrentPage().getPreviousPage(),
-                Database.getInstance().getMovies(), currentPosition, output);
-        currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
+    private void changePage(final ArrayNode output) {
+        ChangePageAction changePage = new ChangePageAction(getActionInput());
+        changePage.getChangePageOutput(CurrentPosition.getInstance().getCurrentPage().getPreviousPage(),
+                Database.getInstance().getMovies(), CurrentPosition.getInstance(), output);
+        CurrentPosition.getInstance().setCurrentPage(CurrentPosition.getInstance().getCurrentPage().getPreviousPage());
     }
 }

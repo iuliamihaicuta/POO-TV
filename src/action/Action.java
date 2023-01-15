@@ -1,22 +1,28 @@
 package action;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import currentPosition.CurrentPosition;
 import io.ActionInput;
 
 /**
  * The interface Action.
  */
-public interface Action {
+public abstract class Action {
+    private ActionInput actionInput;
+
+    public Action(ActionInput actionInput) {
+        this.actionInput = actionInput;
+    }
+
+    public ActionInput getActionInput() {
+        return actionInput;
+    }
+
+    public void setActionInput(ActionInput actionInput) {
+        this.actionInput = actionInput;
+    }
 
     /**
      * Execute action.
-     *
-     * @param action          the action
-     * @param output          the output
-     * @param currentPosition the current position
      */
-    void execute(ActionInput action,
-                 ArrayNode output,
-                 CurrentPosition currentPosition);
+    public abstract void execute(final ArrayNode output);
 }

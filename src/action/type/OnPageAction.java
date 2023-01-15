@@ -25,48 +25,45 @@ import static constants.Constants.PREMIUM_ACCOUNT_PRICE;
 /**
  * The type On page action.
  */
-public final class OnPageAction implements Action {
+public final class OnPageAction extends Action {
     /**
      * Instantiates a new On page action.
      */
-    public OnPageAction() {
+    public OnPageAction(ActionInput actionInput) {
+        super(actionInput);
     }
 
     /**
      * Executes on page action.
      *
-     * @param action          the action
      * @param output          the output
-     * @param currentPosition the current position
      */
     @Override
-    public void execute(final ActionInput action,
-                        final ArrayNode output,
-                        final CurrentPosition currentPosition) {
+    public void execute(final ArrayNode output) {
         ArrayList<User> users = Database.getInstance().getUsers();
-        switch (action.getFeature()) {
+        switch (getActionInput().getFeature()) {
             case "login" -> {
-                login(action, users, output, currentPosition);
+                login(getActionInput(), users, output, CurrentPosition.getInstance());
                 return;
             }
             case "register" -> {
-                register(action, users, output, currentPosition);
+                register(getActionInput(), users, output, CurrentPosition.getInstance());
                 return;
             }
             default -> { }
         }
 
-        Credentials userCredentials = currentPosition.getCurrentUser().getCredentials();
+        Credentials userCredentials = CurrentPosition.getInstance().getCurrentUser().getCredentials();
         MovieList movieList = Database.getInstance().getMovies();
         MovieList permittedMovies = movieList.getPermittedMovies(userCredentials.getCountry());
-        switch (action.getFeature()) {
-            case "search" -> search(action, permittedMovies, output, currentPosition);
-            case "filter" -> filter(action, permittedMovies, output, currentPosition);
+        switch (getActionInput().getFeature()) {
+            case "search" -> search(getActionInput(), permittedMovies, output, CurrentPosition.getInstance());
+            case "filter" -> filter(getActionInput(), permittedMovies, output, CurrentPosition.getInstance());
             case "purchase", "watch", "like", "rate" ->
-                    seeDetailsActions(output, currentPosition, action);
-            case "buy tokens" -> buyTokens(output, currentPosition, action);
-            case "buy premium account" -> buyPremiumAccount(output, currentPosition);
-            case "subscribe" -> subscribe(action, currentPosition, output);
+                    seeDetailsActions(output, CurrentPosition.getInstance(), getActionInput());
+            case "buy tokens" -> buyTokens(output, CurrentPosition.getInstance(), getActionInput());
+            case "buy premium account" -> buyPremiumAccount(output, CurrentPosition.getInstance());
+            case "subscribe" -> subscribe(getActionInput(), CurrentPosition.getInstance(), output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }

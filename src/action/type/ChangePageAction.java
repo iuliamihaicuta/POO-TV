@@ -14,32 +14,29 @@ import pages.Page;
 /**
  * The type Change page action.
  */
-public final class ChangePageAction implements Action {
+public final class ChangePageAction extends Action {
     /**
      * Instantiates a new Change page action.
      */
-    public ChangePageAction() {
+    public ChangePageAction(ActionInput actionInput) {
+        super(actionInput);
     }
 
     /**
      * Change page.
      *
-     * @param action          the action
-     * @param currentPosition the current position
      * @param output          the output
      */
     @Override
-    public void execute(final ActionInput action,
-                        final ArrayNode output,
-                        final CurrentPosition currentPosition) {
+    public void execute(final ArrayNode output) {
         Page nextPage;
-        nextPage = getNextPage(currentPosition, Database.getInstance().getMovies(),
-                    action.getMovie(), action.getPage());
+        nextPage = getNextPage(CurrentPosition.getInstance(), Database.getInstance().getMovies(),
+                    getActionInput().getMovie(), getActionInput().getPage());
 
         if (nextPage != null) {
-            getChangePageOutput(nextPage, Database.getInstance().getMovies(), currentPosition, output);
-            nextPage.setPreviousPage(currentPosition.getCurrentPage());
-            currentPosition.setCurrentPage(nextPage);
+            getChangePageOutput(nextPage, Database.getInstance().getMovies(), CurrentPosition.getInstance(), output);
+            nextPage.setPreviousPage(CurrentPosition.getInstance().getCurrentPage());
+            CurrentPosition.getInstance().setCurrentPage(nextPage);
             return;
         }
 

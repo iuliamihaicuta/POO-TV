@@ -22,16 +22,16 @@ public final class ActionFactory {
     public static Action createAction(final ActionInput action) {
         switch (action.getType()) {
             case "on page" -> {
-                return new OnPageAction();
+                return new OnPageAction(action);
             }
             case "change page" -> {
-                return new ChangePageAction();
+                return new ChangePageAction(action);
             }
             case "back" -> {
-                return new BackAction();
+                return new BackAction(action);
             }
             case "database" -> {
-                return new DatabaseAction();
+                return new DatabaseAction(action);
             }
             default -> throw new IllegalArgumentException("Unrecognized action type");
         }

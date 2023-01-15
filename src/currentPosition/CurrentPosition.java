@@ -12,12 +12,12 @@ public class CurrentPosition {
     private User currentUser;
     private Page currentPage;
     private Movie currentMovie;
-//    private ArrayList<String>
+    private static CurrentPosition instance = null;
 
     /**
      * Instantiates a new Current position.
      */
-    public CurrentPosition() {
+    private CurrentPosition() {
         currentPage = UnauthHomepage.getInstance();
     }
 
@@ -73,5 +73,17 @@ public class CurrentPosition {
      */
     public void setCurrentMovie(final Movie currentMovie) {
         this.currentMovie = currentMovie;
+    }
+
+    public static CurrentPosition getInstance() {
+        if (instance == null) {
+            instance = new CurrentPosition();
+        }
+
+        return instance;
+    }
+
+    public static void setInstance(CurrentPosition currentPosition) {
+        instance = currentPosition;
     }
 }
