@@ -3,7 +3,6 @@ package action.type;
 import action.Action;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import currentPosition.CurrentPosition;
-import database.Database;
 import io.ActionInput;
 import io.Output;
 
@@ -36,8 +35,7 @@ public final class BackAction extends Action {
 
     private void changePage(final ArrayNode output) {
         ChangePageAction changePage = new ChangePageAction(getActionInput());
-        changePage.getChangePageOutput(CurrentPosition.getInstance().getCurrentPage().getPreviousPage(),
-                Database.getInstance().getMovies(), CurrentPosition.getInstance(), output);
+        changePage.getChangePageOutput(CurrentPosition.getInstance().getCurrentPage().getPreviousPage(), output);
         CurrentPosition.getInstance().setCurrentPage(CurrentPosition.getInstance().getCurrentPage().getPreviousPage());
     }
 }

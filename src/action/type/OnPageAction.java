@@ -2,24 +2,23 @@ package action.type;
 
 import action.Action;
 import action.MovieActions;
-import database.Database;
-import io.ActionInput;
-import io.Output;
 import action.filter.Contains;
 import action.filter.Sort;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import currentPosition.CurrentPosition;
+import database.Database;
+import io.ActionInput;
+import io.Output;
 import movie.Movie;
 import movie.MovieList;
 import pages.types.AuthorisedHomepage;
 import pages.types.MoviesPage;
 import pages.types.UnauthHomepage;
-import user.attributes.Credentials;
-import currentPosition.CurrentPosition;
-import user.factory.PremiumUser;
 import user.User;
+import user.attributes.Credentials;
+import user.factory.PremiumUser;
 import user.factory.UserFactory;
 
-import java.util.ArrayList;
 import static constants.Constants.PREMIUM_ACCOUNT_PRICE;
 
 /**
@@ -40,14 +39,13 @@ public final class OnPageAction extends Action {
      */
     @Override
     public void execute(final ArrayNode output) {
-        ArrayList<User> users = Database.getInstance().getUsers();
         switch (getActionInput().getFeature()) {
             case "login" -> {
-                login(getActionInput(), users, output, CurrentPosition.getInstance());
+                login(output);
                 return;
             }
             case "register" -> {
-                register(getActionInput(), users, output, CurrentPosition.getInstance());
+                register(output);
                 return;
             }
             default -> { }
@@ -57,29 +55,27 @@ public final class OnPageAction extends Action {
         MovieList movieList = Database.getInstance().getMovies();
         MovieList permittedMovies = movieList.getPermittedMovies(userCredentials.getCountry());
         switch (getActionInput().getFeature()) {
-            case "search" -> search(getActionInput(), permittedMovies, output, CurrentPosition.getInstance());
-            case "filter" -> filter(getActionInput(), permittedMovies, output, CurrentPosition.getInstance());
+            case "search" -> search(permittedMovies, output);
+            case "filter" -> filter(permittedMovies, output);
             case "purchase", "watch", "like", "rate" ->
-                    seeDetailsActions(output, CurrentPosition.getInstance(), getActionInput());
-            case "buy tokens" -> buyTokens(output, CurrentPosition.getInstance(), getActionInput());
-            case "buy premium account" -> buyPremiumAccount(output, CurrentPosition.getInstance());
-            case "subscribe" -> subscribe(getActionInput(), CurrentPosition.getInstance(), output);
+                    seeDetailsActions(output);
+            case "buy tokens" -> buyTokens(output);
+            case "buy premium account" -> buyPremiumAccount(output);
+            case "subscribe" -> subscribe(output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }
 
-    private void login(final ActionInput action,
-                              final ArrayList<User> users,
-                              final ArrayNode output,
-                              final CurrentPosition currentPosition) {
+    private void login(final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("login")) {
             output.addPOJO(new Output());
             return;
         }
 
         User newUser = null;
-        for (User user : users) {
-            if (action.getCredentials().equals(user.getCredentials())) {
+        for (User user : Database.getInstance().getUsers()) {
+            if (getActionInput().getCredentials().equals(user.getCredentials())) {
                 newUser = user;
                 break;
             }
@@ -97,30 +93,28 @@ public final class OnPageAction extends Action {
         output.addPOJO(new Output(currentPosition.getCurrentUser()));
     }
 
-    private void register(final ActionInput action,
-                                 final ArrayList<User> users,
-                                 final ArrayNode output,
-                                 final CurrentPosition currentPosition) {
-        for (User user : users) {
-            if (action.getCredentials().equals(user.getCredentials())) {
+    private void register(final ArrayNode output) {
+        for (User user : Database.getInstance().getUsers()) {
+            if (getActionInput().getCredentials().equals(user.getCredentials())) {
                 output.addPOJO(new Output());
                 return;
             }
         }
 
-        User newUser = UserFactory.createUser(action.getCredentials().getAccountType(),
-                new User(action.getCredentials()));
-        users.add(newUser);
+        User newUser = UserFactory.createUser(getActionInput().getCredentials().getAccountType(),
+                new User(getActionInput().getCredentials()));
+        Database.getInstance().getUsers().add(newUser);
 
+
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         currentPosition.setCurrentUser(newUser);
         currentPosition.setCurrentPage(AuthorisedHomepage.getInstance());
         output.addPOJO(new Output(currentPosition.getCurrentUser()));
     }
 
-    private void search(final ActionInput action,
-                               final MovieList movieList,
-                               final ArrayNode output,
-                               final CurrentPosition currentPosition) {
+    private void search(final MovieList movieList,
+                        final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("movies")) {
             output.addPOJO(new Output());
             return;
@@ -129,17 +123,16 @@ public final class OnPageAction extends Action {
         MovieList newMovieList = new MovieList();
 
         movieList.getMovies().stream().filter(movie ->
-                movie.getName().startsWith(action.getStartsWith())).forEach(movie ->
+                movie.getName().startsWith(getActionInput().getStartsWith())).forEach(movie ->
                 newMovieList.getMovies().add(movie));
         MoviesPage.getInstance().setMovies(new MovieList(newMovieList));
 
         output.addPOJO(new Output(currentPosition.getCurrentUser(), newMovieList.getMovies()));
     }
 
-    private void filter(final ActionInput action,
-                        final MovieList movieList,
-                        final ArrayNode output,
-                         final CurrentPosition currentPosition) {
+    private void filter(final MovieList movieList,
+                        final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("movies")) {
             output.addPOJO(new Output());
             return;
@@ -147,13 +140,13 @@ public final class OnPageAction extends Action {
 
         MoviesPage.getInstance().setMovies(movieList);
 
-        if (action.getFilters().getContains() != null) {
-            Contains contains = action.getFilters().getContains();
+        if (getActionInput().getFilters().getContains() != null) {
+            Contains contains = getActionInput().getFilters().getContains();
             MoviesPage.getInstance().getMovies().moviesContain(contains);
         }
 
-        if (action.getFilters().getSort() != null) {
-            Sort sort = action.getFilters().getSort();
+        if (getActionInput().getFilters().getSort() != null) {
+            Sort sort = getActionInput().getFilters().getSort();
             MoviesPage.getInstance().getMovies().sortMovies(sort);
         }
 
@@ -161,9 +154,8 @@ public final class OnPageAction extends Action {
                 MoviesPage.getInstance().getMovies().getMovies()));
     }
 
-    private void seeDetailsActions(final ArrayNode output,
-                                  final CurrentPosition currentPosition,
-                                  final ActionInput action) {
+    private void seeDetailsActions(final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("see details")) {
             output.addPOJO(new Output());
             return;
@@ -173,15 +165,11 @@ public final class OnPageAction extends Action {
         MovieActions movieAction = new MovieActions();
 
         if (movie != null) {
-            switch (action.getFeature()) {
-                case "purchase" -> movieAction.purchaseMovie(movie,
-                                currentPosition.getCurrentUser(), output);
-                case "watch" -> movieAction.watchMovie(movie,
-                                currentPosition.getCurrentUser(), output);
-                case "like" -> movieAction.likeMovie(movie,
-                                currentPosition.getCurrentUser(), output);
-                case "rate" -> movieAction.rateMovie(action.getRate(), movie,
-                                currentPosition.getCurrentUser(), output);
+            switch (getActionInput().getFeature()) {
+                case "purchase" -> movieAction.purchaseMovie(output);
+                case "watch" -> movieAction.watchMovie(output);
+                case "like" -> movieAction.likeMovie(output);
+                case "rate" -> movieAction.rateMovie(getActionInput().getRate(), output);
                 default -> throw new IllegalArgumentException("Unrecognized action");
             }
 
@@ -191,9 +179,8 @@ public final class OnPageAction extends Action {
         output.addPOJO(new Output());
     }
 
-    private void buyTokens(final ArrayNode output,
-                                  final CurrentPosition currentPosition,
-                                  final ActionInput action) {
+    private void buyTokens(final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("upgrades")) {
             output.addPOJO(new Output());
             return;
@@ -202,17 +189,17 @@ public final class OnPageAction extends Action {
         User user = currentPosition.getCurrentUser();
         int userBalance = Integer.parseInt(user.getCredentials().getBalance());
 
-        if (userBalance < action.getCount()) {
+        if (userBalance < getActionInput().getCount()) {
             output.addPOJO(new Output());
             return;
         }
 
-        user.getCredentials().setBalance(String.valueOf(userBalance - action.getCount()));
-        user.setTokensCount(user.getTokensCount() + action.getCount());
+        user.getCredentials().setBalance(String.valueOf(userBalance - getActionInput().getCount()));
+        user.setTokensCount(user.getTokensCount() + getActionInput().getCount());
     }
 
-    private void buyPremiumAccount(final ArrayNode output,
-                                   final CurrentPosition currentPosition) {
+    private void buyPremiumAccount(final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (!currentPosition.getCurrentPage().getName().equals("upgrades")) {
             output.addPOJO(new Output());
             return;
@@ -236,13 +223,12 @@ public final class OnPageAction extends Action {
 
     }
 
-    private void subscribe(final ActionInput action,
-                           final CurrentPosition currentPosition,
-                           final ArrayNode output) {
+    private void subscribe(final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
         if (currentPosition.getCurrentPage().getName().equals("see details")
-                && currentPosition.getCurrentMovie().getGenres().contains(action.getSubscribedGenre())
-                && !currentPosition.getCurrentUser().getSubscribedGenres().contains(action.getSubscribedGenre())) {
-            currentPosition.getCurrentUser().getSubscribedGenres().add(action.getSubscribedGenre());
+                && currentPosition.getCurrentMovie().getGenres().contains(getActionInput().getSubscribedGenre())
+                && !currentPosition.getCurrentUser().getSubscribedGenres().contains(getActionInput().getSubscribedGenre())) {
+            currentPosition.getCurrentUser().getSubscribedGenres().add(getActionInput().getSubscribedGenre());
             return;
         }
 

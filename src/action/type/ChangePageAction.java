@@ -30,11 +30,10 @@ public final class ChangePageAction extends Action {
     @Override
     public void execute(final ArrayNode output) {
         Page nextPage;
-        nextPage = getNextPage(CurrentPosition.getInstance(), Database.getInstance().getMovies(),
-                    getActionInput().getMovie(), getActionInput().getPage());
+        nextPage = getNextPage();
 
         if (nextPage != null) {
-            getChangePageOutput(nextPage, Database.getInstance().getMovies(), CurrentPosition.getInstance(), output);
+            getChangePageOutput(nextPage, output);
             nextPage.setPreviousPage(CurrentPosition.getInstance().getCurrentPage());
             CurrentPosition.getInstance().setCurrentPage(nextPage);
             return;
@@ -43,10 +42,10 @@ public final class ChangePageAction extends Action {
         output.addPOJO(new Output());
     }
 
-    private Page getNextPage(final CurrentPosition currentPosition,
-                                    final MovieList movieList,
-                                    final String movieName,
-                                    final String pageName) {
+    private Page getNextPage() {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
+        String pageName = getActionInput().getPage();
+
         if (!currentPosition.getCurrentPage().getAccessiblePages().contains(pageName)) {
             return null;
         }
@@ -55,10 +54,10 @@ public final class ChangePageAction extends Action {
 
         if (pageName.equals("movies")) {
             String country = currentPosition.getCurrentUser().getCredentials().getCountry();
-            MoviesPage.getInstance().setMovies(new MovieList(movieList.getPermittedMovies(country)));
+            MoviesPage.getInstance().setMovies(new MovieList(Database.getInstance().getMovies().getPermittedMovies(country)));
         } else if (pageName.equals("see details")) {
             MovieList permittedMovies = MoviesPage.getInstance().getMovies();
-            Movie currentMovie = permittedMovies.getMovieByName(movieName);
+            Movie currentMovie = permittedMovies.getMovieByName(getActionInput().getMovie());
 
             if (currentMovie == null) {
                 page = null;
@@ -74,18 +73,18 @@ public final class ChangePageAction extends Action {
      * Gets change page output.
      *
      * @param nextPage        the next page
-     * @param movieList       the movie list
-     * @param currentPosition the current position
      * @param output          the output
      */
     public void getChangePageOutput(final Page nextPage,
-                             final MovieList movieList,
-                             final CurrentPosition currentPosition,
                              final ArrayNode output) {
+        CurrentPosition currentPosition = CurrentPosition.getInstance();
+
         switch (nextPage.getName()) {
             case "logout" -> currentPosition.setCurrentUser(null);
             case "movies" -> {
+                MovieList movieList = Database.getInstance().getMovies();
                 String country = currentPosition.getCurrentUser().getCredentials().getCountry();
+
                 MoviesPage.getInstance().setMovies(movieList.getPermittedMovies(country));
 
                 output.addPOJO(new Output(currentPosition.getCurrentUser(),

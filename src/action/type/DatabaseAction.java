@@ -30,15 +30,14 @@ public final class DatabaseAction extends Action {
     @Override
     public void execute(final ArrayNode output) {
         switch (getActionInput().getFeature()) {
-            case "add" -> addMovie(getActionInput(), output);
-            case "delete" -> deleteMovie(getActionInput(), output);
+            case "add" -> addMovie(output);
+            case "delete" -> deleteMovie(output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
     }
 
-    private void addMovie(final ActionInput action,
-                          final ArrayNode output) {
-        Movie movie = action.getAddedMovie();
+    private void addMovie(final ArrayNode output) {
+        Movie movie = getActionInput().getAddedMovie();
 
         Database database = Database.getInstance();
         if (database.getMovies().getMovies().contains(movie)) {
@@ -53,9 +52,8 @@ public final class DatabaseAction extends Action {
         subscribers.forEach(s -> s.getNotifications().add(notification));
     }
 
-    private void deleteMovie(final ActionInput action,
-                             final ArrayNode output) {
-        Movie deletedMovie = new Movie(action.getDeletedMovie());
+    private void deleteMovie(final ArrayNode output) {
+        Movie deletedMovie = new Movie(getActionInput().getDeletedMovie());
         Database database = Database.getInstance();
 
         if (!database.getMovies().getMovies().contains(deletedMovie)) {

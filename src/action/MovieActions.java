@@ -1,6 +1,7 @@
 package action;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import currentPosition.CurrentPosition;
 import database.Database;
 import io.Output;
 import movie.Movie;
@@ -27,13 +28,11 @@ public final class MovieActions {
     /**
      * Purchase movie.
      *
-     * @param movie  the movie
-     * @param user   the user
      * @param output the output
      */
-    public void purchaseMovie(final Movie movie,
-                       final User user,
-                       final ArrayNode output) {
+    public void purchaseMovie(final ArrayNode output) {
+        User user = CurrentPosition.getInstance().getCurrentUser();
+        Movie movie = CurrentPosition.getInstance().getCurrentMovie();
         if (user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
             return;
@@ -62,13 +61,12 @@ public final class MovieActions {
     /**
      * Watch movie.
      *
-     * @param movie  the movie
-     * @param user   the user
      * @param output the output
      */
-    public void watchMovie(final Movie movie,
-                           final User user,
-                           final ArrayNode output) {
+    public void watchMovie(final ArrayNode output) {
+        User user = CurrentPosition.getInstance().getCurrentUser();
+        Movie movie = CurrentPosition.getInstance().getCurrentMovie();
+
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
             return;
@@ -76,7 +74,6 @@ public final class MovieActions {
 
         if (!user.getWatchedMovies().contains(movie)) {
             user.getWatchedMovies().add(new Movie(movie));
-//            output.addPOJO(new Output(user, movie));
         }
         output.addPOJO(new Output(user, movie));
     }
@@ -84,19 +81,13 @@ public final class MovieActions {
     /**
      * Like movie.
      *
-     * @param movie    the movie
-     * @param user     the user
      * @param output   the output
      */
-    public void likeMovie(final Movie movie,
-                          final User user,
-                          final ArrayNode output) {
-        if (!user.getPurchasedMovies().contains(movie)) {
-            output.addPOJO(new Output());
-            return;
-        }
+    public void likeMovie(final ArrayNode output) {
+        User user = CurrentPosition.getInstance().getCurrentUser();
+        Movie movie = CurrentPosition.getInstance().getCurrentMovie();
 
-        if (!user.getWatchedMovies().contains(movie)) {
+        if (!wasMovieWatched()) {
             output.addPOJO(new Output());
             return;
         }
@@ -113,20 +104,14 @@ public final class MovieActions {
      * Rate movie.
      *
      * @param rating   the rating
-     * @param movie    the movie
-     * @param user     the user
      * @param output   the output
      */
     public void rateMovie(final int rating,
-                          final Movie movie,
-                          final User user,
                           final ArrayNode output) {
-        if (!user.getPurchasedMovies().contains(movie)) {
-            output.addPOJO(new Output());
-            return;
-        }
+        User user = CurrentPosition.getInstance().getCurrentUser();
+        Movie movie = CurrentPosition.getInstance().getCurrentMovie();
 
-        if (!user.getWatchedMovies().contains(movie)) {
+        if (!wasMovieWatched()) {
             output.addPOJO(new Output());
             return;
         }
@@ -186,6 +171,17 @@ public final class MovieActions {
             user.getRatedMovies().remove(rateIdx);
             user.getRatedMovies().add(rateIdx, new Movie(movie));
         }
+    }
+
+    private boolean wasMovieWatched() {
+        User user = CurrentPosition.getInstance().getCurrentUser();
+        Movie movie = CurrentPosition.getInstance().getCurrentMovie();
+
+        if (!user.getPurchasedMovies().contains(movie)) {
+            return false;
+        }
+
+        return user.getWatchedMovies().contains(movie);
     }
 
     private static double getAverage(final ArrayList<Integer> list) {
