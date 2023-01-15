@@ -22,30 +22,27 @@ public final class BackAction implements Action {
      * Execute action.
      *
      * @param action          the action
-     * @param database        the database
      * @param output          the output
      * @param currentPosition the current position
      */
     @Override
     public void execute(final ActionInput action,
-                        final Database database,
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
         if (currentPosition.getCurrentUser() != null
                 && currentPosition.getCurrentPage().getPreviousPage() != null) {
-            changePage(database, output, currentPosition);
+            changePage(output, currentPosition);
             return;
         }
 
         output.addPOJO(new Output());
     }
 
-    private void changePage(final Database database,
-                            final ArrayNode output,
+    private void changePage(final ArrayNode output,
                             final CurrentPosition currentPosition) {
         ChangePageAction changePage = new ChangePageAction();
         changePage.getChangePageOutput(currentPosition.getCurrentPage().getPreviousPage(),
-                database.getMovies(), currentPosition, output);
+                Database.getInstance().getMovies(), currentPosition, output);
         currentPosition.setCurrentPage(currentPosition.getCurrentPage().getPreviousPage());
     }
 }

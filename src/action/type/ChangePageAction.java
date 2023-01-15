@@ -25,21 +25,19 @@ public final class ChangePageAction implements Action {
      * Change page.
      *
      * @param action          the action
-     * @param database        the database
      * @param currentPosition the current position
      * @param output          the output
      */
     @Override
     public void execute(final ActionInput action,
-                        final Database database,
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
         Page nextPage;
-        nextPage = getNextPage(currentPosition, database.getMovies(),
+        nextPage = getNextPage(currentPosition, Database.getInstance().getMovies(),
                     action.getMovie(), action.getPage());
 
         if (nextPage != null) {
-            getChangePageOutput(nextPage, database.getMovies(), currentPosition, output);
+            getChangePageOutput(nextPage, Database.getInstance().getMovies(), currentPosition, output);
             nextPage.setPreviousPage(currentPosition.getCurrentPage());
             currentPosition.setCurrentPage(nextPage);
             return;

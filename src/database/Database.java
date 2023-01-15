@@ -11,12 +11,7 @@ import java.util.ArrayList;
 public class Database {
     private MovieList movies;
     private ArrayList<User> users;
-
-    /**
-     * Instantiates a new Database.
-     */
-    public Database() {
-    }
+    private static Database instance = null;
 
     /**
      * Instantiates a new Database.
@@ -24,9 +19,13 @@ public class Database {
      * @param movies the movies
      * @param users  the users
      */
-    public Database(final MovieList movies, final ArrayList<User> users) {
+    private Database(final MovieList movies,
+                     final ArrayList<User> users) {
         this.movies = movies;
         this.users = users;
+    }
+
+    private Database() {
     }
 
     /**
@@ -83,5 +82,22 @@ public class Database {
         }
 
         return subscribers;
+    }
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+
+        return instance;
+    }
+
+    public static void setInstance(final Database database) {
+        instance = database;
+    }
+
+    public static void setInstance(final MovieList movies,
+                                   final ArrayList<User> users) {
+        instance = new Database(movies, users);
     }
 }

@@ -86,12 +86,10 @@ public final class MovieActions {
      *
      * @param movie    the movie
      * @param user     the user
-     * @param database the database
      * @param output   the output
      */
     public void likeMovie(final Movie movie,
                           final User user,
-                          final Database database,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -105,7 +103,7 @@ public final class MovieActions {
 
         movie.incrementNumberOfLikes();
 
-        for (User user1 : database.getUsers()) {
+        for (User user1 : Database.getInstance().getUsers()) {
             replaceMovie(user1, movie);
         }
         user.getLikedMovies().add(new Movie(movie));
@@ -119,13 +117,11 @@ public final class MovieActions {
      * @param rating   the rating
      * @param movie    the movie
      * @param user     the user
-     * @param database the database
      * @param output   the output
      */
     public void rateMovie(final int rating,
                           final Movie movie,
                           final User user,
-                          final Database database,
                           final ArrayNode output) {
         if (!user.getPurchasedMovies().contains(movie)) {
             output.addPOJO(new Output());
@@ -157,7 +153,7 @@ public final class MovieActions {
         movie.getRatings().add(rating);
         movie.setNumRatings(movie.getRatings().size());
         movie.setRating(getAverage(movie.getRatings()));
-        for (User user1 : database.getUsers()) {
+        for (User user1 : Database.getInstance().getUsers()) {
             replaceMovie(user1, movie);
         }
 

@@ -26,28 +26,26 @@ public final class DatabaseAction implements Action {
      * Execute action.
      *
      * @param action          the action
-     * @param database        the database
      * @param output          the output
      * @param currentPosition the current position
      */
     @Override
     public void execute(final ActionInput action,
-                        final Database database,
                         final ArrayNode output,
                         final CurrentPosition currentPosition) {
         switch (action.getFeature()) {
-            case "add" -> addMovie(action, database, output);
-            case "delete" -> deleteMovie(action, database, output, currentPosition);
+            case "add" -> addMovie(action, output);
+            case "delete" -> deleteMovie(action, output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
 
     }
 
     private void addMovie(final ActionInput action,
-                          final Database database,
                           final ArrayNode output) {
         Movie movie = action.getAddedMovie();
 
+        Database database = Database.getInstance();
         if (database.getMovies().getMovies().contains(movie)) {
             output.addPOJO(new Output());
             return;
@@ -62,10 +60,10 @@ public final class DatabaseAction implements Action {
     }
 
     private void deleteMovie(final ActionInput action,
-                             final Database database,
-                             final ArrayNode output,
-                             final CurrentPosition currentPosition) {
+                             final ArrayNode output) {
         Movie deletedMovie = new Movie(action.getDeletedMovie());
+        Database database = Database.getInstance();
+
         if (!database.getMovies().getMovies().contains(deletedMovie)) {
             output.addPOJO(new Output());
             return;

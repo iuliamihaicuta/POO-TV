@@ -32,18 +32,20 @@ public final class Main {
         Input input = objectMapper.readValue(new File(args[0]), Input.class);
         ArrayNode output = objectMapper.createArrayNode();
 
-        Database database = new Database(new MovieList(input.getMovies()), input.getUsersList());
+        Database.setInstance(new MovieList(input.getMovies()), input.getUsersList());
         ArrayList<Action> actions = input.getActionsList();
 
         CurrentPosition currentPosition = new CurrentPosition();
 
         for (int i = 0; i < actions.size(); ++i) {
             actions.get(i).execute(input.getActions().get(i),
-                    database, output, currentPosition);
+                    output, currentPosition);
         }
 
         currentPosition.getCurrentUser().getRecommendation(output);
 
         writer.writeValue(new File(args[1]), output);
+
+        Database.setInstance(null);
     }
 }
