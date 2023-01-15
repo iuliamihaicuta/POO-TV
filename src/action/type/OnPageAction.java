@@ -131,12 +131,9 @@ public final class OnPageAction implements Action {
 
         MovieList newMovieList = new MovieList();
 
-        for (Movie movie : movieList.getMovies()) {
-            if (movie.getName().startsWith(action.getStartsWith())) {
-                newMovieList.getMovies().add(movie);
-            }
-        }
-
+        movieList.getMovies().stream().filter(movie ->
+                movie.getName().startsWith(action.getStartsWith())).forEach(movie ->
+                newMovieList.getMovies().add(movie));
         MoviesPage.getInstance().setMovies(new MovieList(newMovieList));
 
         output.addPOJO(new Output(currentPosition.getCurrentUser(), newMovieList.getMovies()));

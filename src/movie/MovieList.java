@@ -154,11 +154,9 @@ public final class MovieList {
     public MovieList getPermittedMovies(final String country) {
         MovieList permittedMovies = new MovieList();
 
-        for (Movie movie : movies) {
-            if (!movie.getCountriesBanned().contains(country)) {
-                permittedMovies.getMovies().add(movie);
-            }
-        }
+        movies.stream().filter(movie ->
+                !movie.getCountriesBanned().contains(country)).forEach(movie ->
+                permittedMovies.getMovies().add(movie));
 
         return permittedMovies;
     }

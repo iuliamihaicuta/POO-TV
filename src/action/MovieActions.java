@@ -103,9 +103,7 @@ public final class MovieActions {
 
         movie.incrementNumberOfLikes();
 
-        for (User user1 : Database.getInstance().getUsers()) {
-            replaceMovie(user1, movie);
-        }
+        Database.getInstance().getUsers().forEach(o -> replaceMovie(o, movie));
         user.getLikedMovies().add(new Movie(movie));
 
         output.addPOJO(new Output(user, movie));
@@ -153,9 +151,8 @@ public final class MovieActions {
         movie.getRatings().add(rating);
         movie.setNumRatings(movie.getRatings().size());
         movie.setRating(getAverage(movie.getRatings()));
-        for (User user1 : Database.getInstance().getUsers()) {
-            replaceMovie(user1, movie);
-        }
+
+        Database.getInstance().getUsers().forEach(o -> replaceMovie(o, movie));
 
         if (!user.getRatedMovies().contains(movie)) {
             user.getRatedMovies().add(new Movie(movie));

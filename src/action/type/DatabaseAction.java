@@ -38,7 +38,6 @@ public final class DatabaseAction implements Action {
             case "delete" -> deleteMovie(action, output);
             default -> throw new IllegalArgumentException("Unrecognized action");
         }
-
     }
 
     private void addMovie(final ActionInput action,
@@ -54,9 +53,8 @@ public final class DatabaseAction implements Action {
         database.getMovies().getMovies().add(movie);
         ArrayList<User> subscribers = database.getSubscribersToGenres(movie.getGenres());
         Notification notification = new Notification(movie.getName(), "ADD");
-        for (User subscriber : subscribers) {
-            subscriber.getNotifications().add(notification);
-        }
+
+        subscribers.forEach(s -> s.getNotifications().add(notification));
     }
 
     private void deleteMovie(final ActionInput action,
@@ -71,12 +69,10 @@ public final class DatabaseAction implements Action {
 
         Notification notification = new Notification(deletedMovie.getName(), "DELETED");
 
-        for (User user : database.getUsers()) {
-            if (user.removeMovie(deletedMovie)) {
-                user.refund();
-                user.getNotifications().add(notification);
-            }
-        }
+        database.getUsers().stream().filter(o -> o.removeMovie(deletedMovie)).forEach(user -> {
+            user.refund();
+            user.getNotifications().add(notification);
+        });
 
         database.getMovies().getMovies().remove(deletedMovie);
         MoviesPage.getInstance().getMovies().getMovies().remove(deletedMovie);
