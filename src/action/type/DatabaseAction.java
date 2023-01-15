@@ -2,11 +2,11 @@ package action.type;
 
 import action.Action;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import currentPosition.CurrentPosition;
 import database.Database;
 import io.ActionInput;
 import io.Output;
 import movie.Movie;
-import pages.types.MoviesPage;
 import user.User;
 import user.attributes.Notification;
 
@@ -69,6 +69,7 @@ public final class DatabaseAction extends Action {
         });
 
         database.getMovies().getMovies().remove(deletedMovie);
-        MoviesPage.getInstance().getMovies().getMovies().remove(deletedMovie);
+        CurrentPosition.getInstance().getCurrentPage().removeMovie(deletedMovie);
+//        MoviesPage.getInstance().getMovies().getMovies().remove(deletedMovie);
     }
 }

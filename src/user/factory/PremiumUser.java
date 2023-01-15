@@ -1,9 +1,10 @@
 package user.factory;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import currentPosition.CurrentPosition;
+import database.Database;
 import io.Output;
 import movie.Movie;
-import pages.types.MoviesPage;
 import user.User;
 import user.attributes.Notification;
 
@@ -39,7 +40,9 @@ public final class PremiumUser extends User {
     @Override
     public void getRecommendation(final ArrayNode output) {
         ArrayList<Genre> genres = getGenres();
-        ArrayList<Movie> movies = MoviesPage.getInstance().getMovies().getMovies();
+//        ArrayList<Movie> movies = MoviesPage.getInstance().getMovies().getMovies();
+        String country = CurrentPosition.getInstance().getCurrentUser().getCredentials().getCountry();
+        ArrayList<Movie> movies = Database.getInstance().getMovies().getPermittedMovies(country).getMovies();
         movies.sort((o1, o2) -> o2.getNumLikes() - o1.getNumLikes());
 
         movies.removeIf(movie -> getWatchedMovies().contains(movie));

@@ -18,7 +18,7 @@ public class CurrentPosition {
      * Instantiates a new Current position.
      */
     private CurrentPosition() {
-        currentPage = UnauthHomepage.getInstance();
+        currentPage = new UnauthHomepage();
     }
 
     /**

@@ -11,6 +11,7 @@ import io.ActionInput;
 import io.Output;
 import movie.Movie;
 import movie.MovieList;
+import pages.Page;
 import pages.types.AuthorisedHomepage;
 import pages.types.MoviesPage;
 import pages.types.UnauthHomepage;
@@ -84,12 +85,12 @@ public final class OnPageAction extends Action {
         if (newUser == null) {
             output.addPOJO(new Output());
 
-            currentPosition.setCurrentPage(UnauthHomepage.getInstance());
+            currentPosition.setCurrentPage(new UnauthHomepage());
             return;
         }
 
         currentPosition.setCurrentUser(newUser);
-        currentPosition.setCurrentPage(AuthorisedHomepage.getInstance());
+        currentPosition.setCurrentPage(new AuthorisedHomepage());
         output.addPOJO(new Output(currentPosition.getCurrentUser()));
     }
 
@@ -108,7 +109,7 @@ public final class OnPageAction extends Action {
 
         CurrentPosition currentPosition = CurrentPosition.getInstance();
         currentPosition.setCurrentUser(newUser);
-        currentPosition.setCurrentPage(AuthorisedHomepage.getInstance());
+        currentPosition.setCurrentPage(new AuthorisedHomepage());
         output.addPOJO(new Output(currentPosition.getCurrentUser()));
     }
 
@@ -125,7 +126,7 @@ public final class OnPageAction extends Action {
         movieList.getMovies().stream().filter(movie ->
                 movie.getName().startsWith(getActionInput().getStartsWith())).forEach(movie ->
                 newMovieList.getMovies().add(movie));
-        MoviesPage.getInstance().setMovies(new MovieList(newMovieList));
+        ((MoviesPage) currentPosition.getCurrentPage()).setMovies(new MovieList(newMovieList));
 
         output.addPOJO(new Output(currentPosition.getCurrentUser(), newMovieList.getMovies()));
     }
@@ -138,20 +139,21 @@ public final class OnPageAction extends Action {
             return;
         }
 
-        MoviesPage.getInstance().setMovies(movieList);
+        Page page = currentPosition.getCurrentPage();
+        ((MoviesPage) page).setMovies(movieList);
 
         if (getActionInput().getFilters().getContains() != null) {
             Contains contains = getActionInput().getFilters().getContains();
-            MoviesPage.getInstance().getMovies().moviesContain(contains);
+            ((MoviesPage) page).getMovies().moviesContain(contains);
         }
 
         if (getActionInput().getFilters().getSort() != null) {
             Sort sort = getActionInput().getFilters().getSort();
-            MoviesPage.getInstance().getMovies().sortMovies(sort);
+            ((MoviesPage) page).getMovies().sortMovies(sort);
         }
 
         output.addPOJO(new Output(currentPosition.getCurrentUser(),
-                MoviesPage.getInstance().getMovies().getMovies()));
+                ((MoviesPage) page).getMovies().getMovies()));
     }
 
     private void seeDetailsActions(final ArrayNode output) {

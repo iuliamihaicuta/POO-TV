@@ -2,6 +2,8 @@ package movie;
 
 import action.filter.Contains;
 import action.filter.Sort;
+import currentPosition.CurrentPosition;
+import pages.Page;
 import pages.types.MoviesPage;
 
 import java.util.ArrayList;
@@ -101,8 +103,9 @@ public final class MovieList {
 
     private void containsActors(final ArrayList<String> actors) {
         MovieList newMovieList = new MovieList();
+        Page page = CurrentPosition.getInstance().getCurrentPage();
 
-        for (Movie movie : MoviesPage.getInstance().getMovies().getMovies()) {
+        for (Movie movie : ((MoviesPage) page).getMovies().getMovies()) {
             for (String actor : actors) {
                 if (!movie.getActors().contains(actor)) {
                     break;
@@ -111,14 +114,15 @@ public final class MovieList {
                 newMovieList.getMovies().add(new Movie(movie));
             }
         }
-        MoviesPage.getInstance().setMovies(newMovieList);
+        ((MoviesPage) page).setMovies(newMovieList);
 
     }
 
     private void containsGenres(final ArrayList<String> genres) {
         MovieList newMovieList = new MovieList();
+        Page page = CurrentPosition.getInstance().getCurrentPage();
 
-        for (Movie movie : MoviesPage.getInstance().getMovies().getMovies()) {
+        for (Movie movie : ((MoviesPage) page).getMovies().getMovies()) {
             for (String genre : genres) {
                 if (!movie.getGenres().contains(genre)) {
                     break;
@@ -127,7 +131,7 @@ public final class MovieList {
                 newMovieList.getMovies().add(new Movie(movie));
             }
         }
-        MoviesPage.getInstance().setMovies(newMovieList);
+        ((MoviesPage) page).setMovies(newMovieList);
     }
 
     /**

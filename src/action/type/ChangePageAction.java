@@ -54,9 +54,9 @@ public final class ChangePageAction extends Action {
 
         if (pageName.equals("movies")) {
             String country = currentPosition.getCurrentUser().getCredentials().getCountry();
-            MoviesPage.getInstance().setMovies(new MovieList(Database.getInstance().getMovies().getPermittedMovies(country)));
+            ((MoviesPage) page).setMovies(new MovieList(Database.getInstance().getMovies().getPermittedMovies(country)));
         } else if (pageName.equals("see details")) {
-            MovieList permittedMovies = MoviesPage.getInstance().getMovies();
+            MovieList permittedMovies = ((MoviesPage) CurrentPosition.getInstance().getCurrentPage()).getMovies();
             Movie currentMovie = permittedMovies.getMovieByName(getActionInput().getMovie());
 
             if (currentMovie == null) {
@@ -85,7 +85,7 @@ public final class ChangePageAction extends Action {
                 MovieList movieList = Database.getInstance().getMovies();
                 String country = currentPosition.getCurrentUser().getCredentials().getCountry();
 
-                MoviesPage.getInstance().setMovies(movieList.getPermittedMovies(country));
+                ((MoviesPage) nextPage).setMovies(movieList.getPermittedMovies(country));
 
                 output.addPOJO(new Output(currentPosition.getCurrentUser(),
                         movieList.getPermittedMovies(country).getMovies()));

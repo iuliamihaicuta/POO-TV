@@ -1,5 +1,6 @@
 package pages.types;
 
+import movie.Movie;
 import movie.MovieList;
 import pages.Page;
 
@@ -9,9 +10,8 @@ import java.util.ArrayList;
  * The type Movies page.
  */
 public final class MoviesPage extends Page {
-    private static MoviesPage instance = null;
     private MovieList movies;
-    private MoviesPage() {
+    public MoviesPage() {
         this.setName("movies");
 
         this.setAccessiblePages(new ArrayList<>());
@@ -43,16 +43,8 @@ public final class MoviesPage extends Page {
         this.movies = movies;
     }
 
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
-    public static MoviesPage getInstance() {
-        if (instance == null) {
-            instance = new MoviesPage();
-        }
-
-        return instance;
+    @Override
+    public void removeMovie(final Movie movie) {
+        movies.getMovies().remove(movie);
     }
 }

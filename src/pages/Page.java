@@ -1,12 +1,7 @@
 package pages;
 
-import pages.types.LoginPage;
-import pages.types.RegisterPage;
-import pages.types.MoviesPage;
-import pages.types.UpgradesPage;
-import pages.types.AuthorisedHomepage;
-import pages.types.SeeDetailsPage;
-import pages.types.UnauthHomepage;
+import movie.Movie;
+import pages.types.*;
 
 import java.util.ArrayList;
 
@@ -100,27 +95,30 @@ public abstract class Page {
     public Page getPageByName(final String pageName) {
         switch (pageName) {
             case "login" -> {
-                return LoginPage.getInstance();
+                return new LoginPage();
             }
             case "register" -> {
-                return RegisterPage.getInstance();
+                return new RegisterPage();
             }
             case "homepage neautentificat", "logout" -> {
-                return UnauthHomepage.getInstance();
+                return new UnauthHomepage();
             }
             case "homepage autentificat" -> {
-                return AuthorisedHomepage.getInstance();
+                return new AuthorisedHomepage();
             }
             case "movies" -> {
-                return MoviesPage.getInstance();
+                return new MoviesPage();
             }
             case "upgrades" -> {
-                return UpgradesPage.getInstance();
+                return new UpgradesPage();
             }
             case "see details" -> {
-                return SeeDetailsPage.getInstance();
+                return new SeeDetailsPage();
             }
             default -> throw new IllegalArgumentException("Unrecognized page");
         }
+    }
+
+    public void removeMovie(Movie movie) {
     }
 }
