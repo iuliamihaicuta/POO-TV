@@ -7,7 +7,7 @@ import io.ActionInput;
  * The interface Action.
  */
 public abstract class Action {
-    private ActionInput actionInput;
+    private final ActionInput actionInput;
 
     public Action(ActionInput actionInput) {
         this.actionInput = actionInput;
@@ -15,10 +15,6 @@ public abstract class Action {
 
     public ActionInput getActionInput() {
         return actionInput;
-    }
-
-    public void setActionInput(ActionInput actionInput) {
-        this.actionInput = actionInput;
     }
 
     /**
