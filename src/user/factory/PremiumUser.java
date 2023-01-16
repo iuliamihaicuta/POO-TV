@@ -40,7 +40,7 @@ public final class PremiumUser extends User {
     @Override
     public void getRecommendation(final ArrayNode output) {
         ArrayList<Genre> genres = getGenres();
-//        ArrayList<Movie> movies = MoviesPage.getInstance().getMovies().getMovies();
+
         String country = CurrentPosition.getInstance().getCurrentUser().getCredentials().getCountry();
         ArrayList<Movie> movies = Database.getInstance().getMovies().getPermittedMovies(country).getMovies();
         movies.sort((o1, o2) -> o2.getNumLikes() - o1.getNumLikes());

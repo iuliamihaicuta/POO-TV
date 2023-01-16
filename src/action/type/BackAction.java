@@ -13,8 +13,10 @@ public final class BackAction extends Action {
 
     /**
      * Instantiates a new Back action.
+     *
+     * @param actionInput the action input
      */
-    public BackAction(ActionInput actionInput) {
+    public BackAction(final ActionInput actionInput) {
         super(actionInput);
     }
 

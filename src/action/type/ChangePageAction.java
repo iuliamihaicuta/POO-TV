@@ -17,8 +17,10 @@ import pages.Page;
 public final class ChangePageAction extends Action {
     /**
      * Instantiates a new Change page action.
+     *
+     * @param actionInput the action input
      */
-    public ChangePageAction(ActionInput actionInput) {
+    public ChangePageAction(final ActionInput actionInput) {
         super(actionInput);
     }
 
@@ -72,8 +74,8 @@ public final class ChangePageAction extends Action {
     /**
      * Gets change page output.
      *
-     * @param nextPage        the next page
-     * @param output          the output
+     * @param nextPage the next page
+     * @param output   the output
      */
     public void getChangePageOutput(final Page nextPage,
                              final ArrayNode output) {

@@ -1,6 +1,6 @@
 package io;
 
-import action.filter.Filters;
+import action.movieActions.filter.Filters;
 import movie.Movie;
 import user.attributes.Credentials;
 

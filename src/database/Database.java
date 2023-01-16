@@ -84,6 +84,11 @@ public class Database {
         return subscribers;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -92,10 +97,21 @@ public class Database {
         return instance;
     }
 
+    /**
+     * Sets instance.
+     *
+     * @param database the database
+     */
     public static void setInstance(final Database database) {
         instance = database;
     }
 
+    /**
+     * Sets instance.
+     *
+     * @param movies the movies
+     * @param users  the users
+     */
     public static void setInstance(final MovieList movies,
                                    final ArrayList<User> users) {
         instance = new Database(movies, users);

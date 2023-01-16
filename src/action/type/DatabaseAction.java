@@ -18,8 +18,10 @@ import java.util.ArrayList;
 public final class DatabaseAction extends Action {
     /**
      * Instantiates a new Database action.
+     *
+     * @param actionInput the action input
      */
-    public DatabaseAction(ActionInput actionInput) {
+    public DatabaseAction(final ActionInput actionInput) {
         super(actionInput);
     }
     /**
@@ -70,6 +72,5 @@ public final class DatabaseAction extends Action {
 
         database.getMovies().getMovies().remove(deletedMovie);
         CurrentPosition.getInstance().getCurrentPage().removeMovie(deletedMovie);
-//        MoviesPage.getInstance().getMovies().getMovies().remove(deletedMovie);
     }
 }

@@ -64,4 +64,5 @@ their specific type for classes that extend/implement `User` and `Action`.
 - streams la iterare prin users si movies
 - functii lambda
 - Comparator.comparing + method reference operator
-- 
+- exceptii
+- singleton pt Database si CurrentPosition

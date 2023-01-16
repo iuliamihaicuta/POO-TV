@@ -1,7 +1,11 @@
 package action.type;
 
 import action.Action;
-import action.movieActions.command.*;
+import action.movieActions.command.LikeMovie;
+import action.movieActions.command.WatchMovie;
+import action.movieActions.command.RateMovie;
+import action.movieActions.command.PurchaseMovie;
+import action.movieActions.command.Executor;
 import action.movieActions.filter.Contains;
 import action.movieActions.filter.Sort;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -28,8 +32,10 @@ import static constants.Constants.PREMIUM_ACCOUNT_PRICE;
 public final class OnPageAction extends Action {
     /**
      * Instantiates a new On page action.
+     *
+     * @param actionInput the action input
      */
-    public OnPageAction(ActionInput actionInput) {
+    public OnPageAction(final ActionInput actionInput) {
         super(actionInput);
     }
 

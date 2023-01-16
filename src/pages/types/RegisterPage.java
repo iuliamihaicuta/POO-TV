@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * The type Register page.
  */
 public final class RegisterPage extends Page {
+    /**
+     * Instantiates a new Register page.
+     */
     public RegisterPage() {
         this.setName("register");
 

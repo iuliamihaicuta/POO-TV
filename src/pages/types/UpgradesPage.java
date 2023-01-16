@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * The type Upgrades page.
  */
 public final class UpgradesPage extends Page {
+    /**
+     * Instantiates a new Upgrades page.
+     */
     public UpgradesPage() {
         this.setName("upgrades");
 

@@ -11,6 +11,10 @@ import java.util.ArrayList;
  */
 public final class MoviesPage extends Page {
     private MovieList movies;
+
+    /**
+     * Instantiates a new Movies page.
+     */
     public MoviesPage() {
         this.setName("movies");
 

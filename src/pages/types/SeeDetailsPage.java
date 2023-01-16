@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * The type See details page.
  */
 public final class SeeDetailsPage extends Page {
+    /**
+     * Instantiates a new See details page.
+     */
     public SeeDetailsPage() {
         this.setName("see details");
 

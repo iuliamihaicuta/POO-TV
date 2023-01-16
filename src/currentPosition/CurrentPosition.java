@@ -8,7 +8,7 @@ import user.User;
 /**
  * The type Current position.
  */
-public class CurrentPosition {
+public final class CurrentPosition {
     private User currentUser;
     private Page currentPage;
     private Movie currentMovie;
@@ -76,14 +76,29 @@ public class CurrentPosition {
         this.currentMovie = currentMovie;
     }
 
+    /**
+     * Gets current rating.
+     *
+     * @return the current rating
+     */
     public int getCurrentRating() {
         return currentRating;
     }
 
-    public void setCurrentRating(int currentRating) {
+    /**
+     * Sets current rating.
+     *
+     * @param currentRating the current rating
+     */
+    public void setCurrentRating(final int currentRating) {
         this.currentRating = currentRating;
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static CurrentPosition getInstance() {
         if (instance == null) {
             instance = new CurrentPosition();
@@ -92,7 +107,12 @@ public class CurrentPosition {
         return instance;
     }
 
-    public static void setInstance(CurrentPosition currentPosition) {
+    /**
+     * Sets instance.
+     *
+     * @param currentPosition the current position
+     */
+    public static void setInstance(final CurrentPosition currentPosition) {
         instance = currentPosition;
     }
 }

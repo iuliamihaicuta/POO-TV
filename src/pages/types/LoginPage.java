@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * The type Login page.
  */
 public final class LoginPage extends Page {
+    /**
+     * Instantiates a new Login page.
+     */
     public LoginPage() {
         this.setName("login");
 

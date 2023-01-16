@@ -10,7 +10,10 @@ import user.attributes.Ratings;
 
 import java.util.ArrayList;
 
-import static constants.Constants.*;
+import static constants.Constants.MAX_RATING;
+import static constants.Constants.MIN_RATING;
+import static constants.Constants.MOVIE_PRICE;
+
 
 /**
  * The type Movie actions.
@@ -79,7 +82,7 @@ public final class MovieActions {
     /**
      * Like movie.
      *
-     * @param output   the output
+     * @param output the output
      */
     public void likeMovie(final ArrayNode output) {
         User user = CurrentPosition.getInstance().getCurrentUser();
@@ -101,7 +104,7 @@ public final class MovieActions {
     /**
      * Rate movie.
      *
-     * @param output   the output
+     * @param output the output
      */
     public void rateMovie(final ArrayNode output) {
         User user = CurrentPosition.getInstance().getCurrentUser();

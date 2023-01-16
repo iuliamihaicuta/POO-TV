@@ -1,7 +1,13 @@
 package pages;
 
 import movie.Movie;
-import pages.types.*;
+import pages.types.AuthorisedHomepage;
+import pages.types.LoginPage;
+import pages.types.MoviesPage;
+import pages.types.RegisterPage;
+import pages.types.SeeDetailsPage;
+import pages.types.UnauthHomepage;
+import pages.types.UpgradesPage;
 
 import java.util.ArrayList;
 
@@ -119,6 +125,11 @@ public abstract class Page {
         }
     }
 
-    public void removeMovie(Movie movie) {
+    /**
+     * Remove movie.
+     *
+     * @param movie the movie
+     */
+    public void removeMovie(final Movie movie) {
     }
 }
