@@ -96,13 +96,3 @@ users were accessed more easily.
 The page classes are no longer implemented using Singleton and I added
 the Command Design Pattern to facilitate the interaction with the actions
 performed to the movies - purchase, watch, like, rate.
-
----
-## Feedback
-
-I really enjoyed working on the project and since it was divided into two
-stages, I had the opportunity to revise the code following the feedback and
-to deepen some concepts.
-
-It was one of my favorite projects this semester.
-
